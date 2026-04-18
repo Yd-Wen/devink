@@ -36,6 +36,20 @@ class Settings(BaseSettings):
     # 密码加密盐值
     password_salt: str
     
+    # AI 配置
+    dashscope_api_key: str
+    dashscope_model: str = "qwen3-max"
+    
+    # Pexels 图片搜索
+    pexels_api_key: str
+    
+    # 阿里云 OSS
+    alicloud_oss_secret_id: str
+    alicloud_oss_secret_key: str
+    alicloud_oss_region: str
+    alicloud_oss_bucket: str
+    alicloud_oss_domain: str = ""
+
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE),
         env_file_encoding="utf-8",

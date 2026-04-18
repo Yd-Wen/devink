@@ -19,6 +19,10 @@ dependencies = [
     "python-dotenv==1.0.1",
     "passlib[bcrypt]==1.7.4",
     "python-dateutil==2.9.0.post0",
+    "openai==1.58.1",
+    "httpx==0.28.1",
+    # "cos-python-sdk-v5==1.9.32",
+    "alibabacloud-oss-v2==1.2.5",
 ]
 
 [build-system]
@@ -26,10 +30,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "pytest>=8.0.0",
-    "black>=24.0.0",
-]
+dev = ["pytest>=8.0.0", "black>=24.0.0"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
