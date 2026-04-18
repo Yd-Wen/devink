@@ -15,18 +15,21 @@ from app.schemas.user import (
     UserVO,
     LoginUserVO
 )
-from app.services.user_service import UserService
-from app.deps import get_current_user, require_login, require_admin, generate_session_id
+from app.services.user import UserService
+from app.depends import get_current_user, require_login, require_admin, generate_session_id
 from app.utils.session import set_session, remove_session
 from app.config import settings
 
-router = APIRouter(prefix="/user", tags=["用户管理"])
+router = APIRouter(
+    prefix="/user", 
+    tags=["userController"]
+)
 
 
 @router.post("/register", response_model=BaseResponse[int])
 async def register(
     request: UserRegisterRequest,
-    db: Database = Depends(get_db)
+    db: Database = Depends(get_db)  # 依赖注入,获取数据库
 ):
     """用户注册"""
     service = UserService(db)
@@ -38,7 +41,7 @@ async def register(
 async def login(
     request: UserLoginRequest,
     response: Response,
-    db: Database = Depends(get_db)
+    db: Database = Depends(get_db)  # 依赖注入,获取数据库
 ):
     """用户登录"""
     service = UserService(db)
@@ -65,7 +68,7 @@ async def login(
 @router.post("/logout", response_model=BaseResponse[bool])
 async def logout(
     response: Response,
-    current_user: Optional[LoginUserVO] = Depends(get_current_user)
+    current_user: Optional[LoginUserVO] = Depends(get_current_user)  # 依赖注入,获取当前用户
 ):
     """用户登出"""
     # 删除 Cookie
@@ -76,7 +79,7 @@ async def logout(
 
 @router.get("/get/login", response_model=BaseResponse[LoginUserVO])
 async def get_login_user(
-    current_user: LoginUserVO = Depends(require_login)
+    current_user: LoginUserVO = Depends(require_login)  # 依赖注入,需要登录
 ):
     """获取当前登录用户"""
     return BaseResponse.success(data=current_user)
@@ -85,7 +88,7 @@ async def get_login_user(
 @router.get("/get", response_model=BaseResponse[UserVO])
 async def get_user_by_id(
     id: int,
-    db: Database = Depends(get_db)
+    db: Database = Depends(get_db)  # 依赖注入,获取数据库
 ):
     """根据 ID 获取用户"""
     service = UserService(db)
@@ -96,8 +99,8 @@ async def get_user_by_id(
 @router.post("/list/page", response_model=BaseResponse[dict])
 async def list_users_by_page(
     request: UserQueryRequest,
-    db: Database = Depends(get_db),
-    _: LoginUserVO = Depends(require_admin)
+    db: Database = Depends(get_db),  # 依赖注入,获取数据库
+    _: LoginUserVO = Depends(require_admin)  # 依赖注入,需要管理员
 ):
     """分页查询用户列表（管理员）"""
     service = UserService(db)
@@ -114,8 +117,8 @@ async def list_users_by_page(
 @router.post("/add", response_model=BaseResponse[int])
 async def add_user(
     request: UserAddRequest,
-    db: Database = Depends(get_db),
-    _: LoginUserVO = Depends(require_admin)
+    db: Database = Depends(get_db),  # 依赖注入,获取数据库
+    _: LoginUserVO = Depends(require_admin)  # 依赖注入,需要管理员
 ):
     """添加用户（管理员）"""
     service = UserService(db)
@@ -126,8 +129,8 @@ async def add_user(
 @router.post("/update", response_model=BaseResponse[bool])
 async def update_user(
     request: UserUpdateRequest,
-    db: Database = Depends(get_db),
-    _: LoginUserVO = Depends(require_admin)
+    db: Database = Depends(get_db),  # 依赖注入,获取数据库
+    _: LoginUserVO = Depends(require_admin)  # 依赖注入,需要管理员
 ):
     """更新用户（管理员）"""
     service = UserService(db)
@@ -138,8 +141,8 @@ async def update_user(
 @router.post("/delete", response_model=BaseResponse[bool])
 async def delete_user(
     request: DeleteRequest,
-    db: Database = Depends(get_db),
-    _: LoginUserVO = Depends(require_admin)
+    db: Database = Depends(get_db),  # 依赖注入,获取数据库
+    _: LoginUserVO = Depends(require_admin)  # 依赖注入,需要管理员
 ):
     """删除用户（管理员）"""
     service = UserService(db)

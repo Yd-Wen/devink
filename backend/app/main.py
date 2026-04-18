@@ -30,8 +30,8 @@ async def lifespan(app: FastAPI):
 
 # 创建 FastAPI 应用
 app = FastAPI(
-    title="AI 爆款文章创作器",
-    description="基于多智能体编排的 AI 文章创作平台",
+    title="研墨：让技术写作，如挥毫般流畅",
+    description="基于多智能体编排的 AI 博客写作助手",
     version="0.0.1",
     lifespan=lifespan
 )
@@ -78,4 +78,21 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.include_router(health_router, prefix="/api")
 app.include_router(user_router, prefix="/api")
 
+@app.get("/")
+async def root():
+    """根路径"""
+    return {
+        "message": "研墨：让技术写作，如挥毫般流畅",
+        "version": "0.0.1",
+        "docs": "/docs"
+    }
 
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "app.main:app",
+        host=settings.server_host,
+        port=settings.server_port,
+        reload=True
+    )

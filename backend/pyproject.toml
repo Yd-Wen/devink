@@ -1,5 +1,5 @@
 [project]
-name = "devink-backend"
+name = "devink"
 version = "0.0.1"
 description = "研墨：让技术写作，如挥毫般流畅。 | DevInk — Write code. Ink ideas. Effortlessly."
 readme = "README.md"
@@ -25,8 +25,11 @@ dependencies = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv]
-dev-dependencies = []
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "black>=24.0.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
