@@ -75,7 +75,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { deleteUser, listUserVoByPage } from '@/api/userController.ts'
+import { deleteUser, listUsersByPage } from '@/api/userController.ts'
 import { message } from 'ant-design-vue'
 import { SearchOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
@@ -127,7 +127,7 @@ const searchParams = reactive<API.UserQueryRequest>({
 
 // 获取数据
 const fetchData = async () => {
-  const res = await listUserVoByPage({
+  const res = await listUsersByPage({
     ...searchParams,
   })
   if (res.data.data) {
@@ -184,7 +184,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 #userManagePage {
   background: var(--color-background-secondary);
   min-height: 100vh;

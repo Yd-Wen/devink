@@ -1,5 +1,5 @@
 declare namespace API {
-  type addUserApiUserAddPostParams = {
+  type addUserParams = {
     SESSION?: string | null
   }
 
@@ -47,7 +47,7 @@ declare namespace API {
     updateTime: string
   }
 
-  type aiModifyOutlineApiBlogAiModifyOutlinePostParams = {
+  type aiModifyOutlineParams = {
     SESSION?: string | null
   }
 
@@ -239,19 +239,19 @@ declare namespace API {
     updateTime: string
   }
 
-  type confirmOutlineApiBlogConfirmOutlinePostParams = {
+  type confirmOutlineParams = {
     SESSION?: string | null
   }
 
-  type confirmTitleApiBlogConfirmTitlePostParams = {
+  type confirmTitleParams = {
     SESSION?: string | null
   }
 
-  type createBlogApiBlogCreatePostParams = {
+  type createBlogParams = {
     SESSION?: string | null
   }
 
-  type deleteBlogApiBlogDeletePostParams = {
+  type deleteBlogParams = {
     SESSION?: string | null
   }
 
@@ -260,29 +260,29 @@ declare namespace API {
     id: number
   }
 
-  type deleteUserApiUserDeletePostParams = {
+  type deleteUserParams = {
     SESSION?: string | null
   }
 
-  type getBlogApiBlogTaskIdGetParams = {
+  type getBlogParams = {
     task_id: string
     SESSION?: string | null
   }
 
-  type getExecutionLogsApiBlogExecutionLogsTaskIdGetParams = {
+  type getExecutionLogsParams = {
     task_id: string
   }
 
-  type getLoginUserApiUserGetLoginGetParams = {
+  type getLoginUserParams = {
     SESSION?: string | null
   }
 
-  type getProgressApiBlogProgressTaskIdGetParams = {
+  type getProgressParams = {
     task_id: string
     SESSION?: string | null
   }
 
-  type getUserByIdApiUserGetGetParams = {
+  type getUserByIdParams = {
     id: number
   }
 
@@ -291,11 +291,11 @@ declare namespace API {
     detail?: ValidationError[]
   }
 
-  type listBlogApiBlogListPostParams = {
+  type listBlogParams = {
     SESSION?: string | null
   }
 
-  type listUsersByPageApiUserListPagePostParams = {
+  type listUsersByPageParams = {
     SESSION?: string | null
   }
 
@@ -318,7 +318,7 @@ declare namespace API {
     updateTime: string
   }
 
-  type logoutApiUserLogoutPostParams = {
+  type logoutParams = {
     SESSION?: string | null
   }
 
@@ -338,7 +338,7 @@ declare namespace API {
     subTitle: string
   }
 
-  type updateUserApiUserUpdatePostParams = {
+  type updateUserParams = {
     SESSION?: string | null
   }
 

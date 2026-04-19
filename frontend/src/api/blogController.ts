@@ -3,9 +3,9 @@
 import request from '@/request'
 
 /** Get Blog 获取博客详情 GET /api/blog/${param0} */
-export async function getBlogApiBlogTaskIdGet(
+export async function getBlog(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getBlogApiBlogTaskIdGetParams,
+  params: API.getBlogParams,
   options?: { [key: string]: any }
 ) {
   const { task_id: param0, ...queryParams } = params
@@ -17,9 +17,9 @@ export async function getBlogApiBlogTaskIdGet(
 }
 
 /** Ai Modify Outline AI 修改大纲 POST /api/blog/ai-modify-outline */
-export async function aiModifyOutlineApiBlogAiModifyOutlinePost(
+export async function aiModifyOutline(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.aiModifyOutlineApiBlogAiModifyOutlinePostParams,
+  params: API.aiModifyOutlineParams,
   body: API.BlogAiModifyOutlineRequest,
   options?: { [key: string]: any }
 ) {
@@ -35,9 +35,9 @@ export async function aiModifyOutlineApiBlogAiModifyOutlinePost(
 }
 
 /** Confirm Outline 确认大纲 POST /api/blog/confirm-outline */
-export async function confirmOutlineApiBlogConfirmOutlinePost(
+export async function confirmOutline(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.confirmOutlineApiBlogConfirmOutlinePostParams,
+  params: API.confirmOutlineParams,
   body: API.BlogConfirmOutlineRequest,
   options?: { [key: string]: any }
 ) {
@@ -53,9 +53,9 @@ export async function confirmOutlineApiBlogConfirmOutlinePost(
 }
 
 /** Confirm Title 确认标题并输入补充描述 POST /api/blog/confirm-title */
-export async function confirmTitleApiBlogConfirmTitlePost(
+export async function confirmTitle(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.confirmTitleApiBlogConfirmTitlePostParams,
+  params: API.confirmTitleParams,
   body: API.BlogConfirmTitleRequest,
   options?: { [key: string]: any }
 ) {
@@ -71,9 +71,9 @@ export async function confirmTitleApiBlogConfirmTitlePost(
 }
 
 /** Create Blog 创建博客任务 POST /api/blog/create */
-export async function createBlogApiBlogCreatePost(
+export async function createBlog(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.createBlogApiBlogCreatePostParams,
+  params: API.createBlogParams,
   body: API.BlogCreateRequest,
   options?: { [key: string]: any }
 ) {
@@ -89,9 +89,9 @@ export async function createBlogApiBlogCreatePost(
 }
 
 /** Delete Blog 删除博客 POST /api/blog/delete */
-export async function deleteBlogApiBlogDeletePost(
+export async function deleteBlog(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteBlogApiBlogDeletePostParams,
+  params: API.deleteBlogParams,
   body: API.DeleteRequest,
   options?: { [key: string]: any }
 ) {
@@ -107,9 +107,9 @@ export async function deleteBlogApiBlogDeletePost(
 }
 
 /** Get Execution Logs 获取任务执行日志 GET /api/blog/execution-logs/${param0} */
-export async function getExecutionLogsApiBlogExecutionLogsTaskIdGet(
+export async function getExecutionLogs(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getExecutionLogsApiBlogExecutionLogsTaskIdGetParams,
+  params: API.getExecutionLogsParams,
   options?: { [key: string]: any }
 ) {
   const { task_id: param0, ...queryParams } = params
@@ -121,9 +121,9 @@ export async function getExecutionLogsApiBlogExecutionLogsTaskIdGet(
 }
 
 /** List Blog 分页查询博客列表 POST /api/blog/list */
-export async function listBlogApiBlogListPost(
+export async function listBlog(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listBlogApiBlogListPostParams,
+  params: API.listBlogParams,
   body: API.BlogQueryRequest,
   options?: { [key: string]: any }
 ) {
@@ -139,9 +139,9 @@ export async function listBlogApiBlogListPost(
 }
 
 /** Get Progress SSE 进度推送 GET /api/blog/progress/${param0} */
-export async function getProgressApiBlogProgressTaskIdGet(
+export async function getProgress(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getProgressApiBlogProgressTaskIdGetParams,
+  params: API.getProgressParams,
   options?: { [key: string]: any }
 ) {
   const { task_id: param0, ...queryParams } = params

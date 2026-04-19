@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/loginUser'
-import { listArticle } from '@/api/articleController'
+import { listBlog } from '@/api/blogController'
 import dayjs from 'dayjs'
 import {
   RocketOutlined,
@@ -22,8 +22,8 @@ const loginUserStore = useLoginUserStore()
 const topic = ref('')
 
 // 最近文章
-const recentArticles = ref<API.ArticleVO[]>([])
-const loadingArticles = ref(false)
+const recentBlogs = ref<API.BlogVO[]>([])
+const loadingBlogs = ref(false)
 
 const goToCreate = () => {
   if (topic.value.trim()) {
@@ -34,25 +34,25 @@ const goToCreate = () => {
 }
 
 const goToList = () => {
-  router.push('/article/list')
+  router.push('/blog/list')
 }
 
-const viewArticle = (article: API.ArticleVO) => {
-  router.push(`/article/${article.taskId}`)
+const viewBlog = (blog: API.BlogVO) => {
+  router.push(`/blog/${blog.taskId}`)
 }
 
 // 加载最近文章
-const loadRecentArticles = async () => {
+const loadRecentBlogs = async () => {
   if (!loginUserStore.loginUser.id) return
 
-  loadingArticles.value = true
+  loadingBlogs.value = true
   try {
-    const res = await listArticle({ pageNum: 1, pageSize: 6 })
-    recentArticles.value = res.data.data?.records || []
+    const res = await listBlog({ pageNum: 1, pageSize: 6 })
+    recentBlogs.value = res.data.data?.records || []
   } catch (error) {
     console.error('加载文章失败:', error)
   } finally {
-    loadingArticles.value = false
+    loadingBlogs.value = false
   }
 }
 
@@ -103,7 +103,7 @@ const features = [
 ]
 
 onMounted(() => {
-  loadRecentArticles()
+  loadRecentBlogs()
 })
 </script>
 
@@ -169,8 +169,8 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Recent Articles Section -->
-    <div v-if="loginUserStore.loginUser.id && recentArticles.length > 0" class="articles-section">
+    <!-- Recent Blogs Section -->
+    <div v-if="loginUserStore.loginUser.id && recentBlogs.length > 0" class="blogs-section">
       <div class="container">
         <div class="section-header-row">
           <div>
@@ -183,33 +183,33 @@ onMounted(() => {
           </a-button>
         </div>
 
-        <a-spin :spinning="loadingArticles">
-          <div class="articles-grid">
+        <a-spin :spinning="loadingBlogs">
+          <div class="blogs-grid">
             <div
-              v-for="article in recentArticles"
-              :key="article.id"
-              class="article-card"
-              @click="viewArticle(article)"
+              v-for="blog in recentBlogs"
+              :key="blog.id"
+              class="blog-card"
+              @click="viewBlog(blog)"
             >
-              <div class="article-cover">
+              <div class="blog-cover">
                 <img
-                  v-if="article.coverImage"
-                  :src="article.coverImage"
-                  :alt="article.mainTitle"
+                  v-if="blog.coverImage"
+                  :src="blog.coverImage"
+                  :alt="blog.mainTitle"
                 />
                 <div v-else class="cover-placeholder">
                   <FileTextOutlined />
                 </div>
               </div>
-              <div class="article-info">
-                <h4 class="article-title">{{ article.mainTitle || article.topic }}</h4>
-                <div class="article-meta">
-                  <span class="article-time">
+              <div class="blog-info">
+                <h4 class="blog-title">{{ blog.mainTitle || blog.topic }}</h4>
+                <div class="blog-meta">
+                  <span class="blog-time">
                     <ClockCircleOutlined />
-                    {{ formatTime(article.createTime) }}
+                    {{ formatTime(blog.createTime) }}
                   </span>
-                  <span :class="['article-status', `status-${article.status?.toLowerCase()}`]">
-                    {{ article.status === 'COMPLETED' ? '已完成' : article.status === 'PROCESSING' ? '生成中' : '等待中' }}
+                  <span :class="['blog-status', `status-${blog.status?.toLowerCase()}`]">
+                    {{ blog.status === 'COMPLETED' ? '已完成' : blog.status === 'PROCESSING' ? '生成中' : '等待中' }}
                   </span>
                 </div>
               </div>
@@ -454,13 +454,13 @@ onMounted(() => {
   line-height: 1.5;
 }
 
-/* Articles Section */
-.articles-section {
+/* Blogs Section */
+.blogs-section {
   padding: 60px 20px 80px;
   background: var(--color-background);
 }
 
-.articles-section .container {
+.blogs-section .container {
   max-width: 1100px;
 }
 
@@ -497,13 +497,13 @@ onMounted(() => {
   color: var(--color-primary-dark);
 }
 
-.articles-grid {
+.blogs-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-.article-card {
+.blog-card {
   background: white;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -512,19 +512,19 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.article-card:hover {
+.blog-card:hover {
   border-color: var(--color-primary-light);
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-2px);
 }
 
-.article-cover {
+.blog-cover {
   height: 140px;
   background: var(--color-background-tertiary);
   overflow: hidden;
 }
 
-.article-cover img {
+.blog-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -540,11 +540,11 @@ onMounted(() => {
   color: var(--color-text-muted);
 }
 
-.article-info {
+.blog-info {
   padding: 16px;
 }
 
-.article-title {
+.blog-title {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 12px;
@@ -556,13 +556,13 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.article-meta {
+.blog-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.article-time {
+.blog-time {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -570,24 +570,24 @@ onMounted(() => {
   color: var(--color-text-muted);
 }
 
-.article-status {
+.blog-status {
   font-size: 12px;
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   font-weight: 500;
 }
 
-.article-status.status-completed {
+.blog-status.status-completed {
   background: rgba(34, 197, 94, 0.1);
   color: var(--color-primary-dark);
 }
 
-.article-status.status-processing {
+.blog-status.status-processing {
   background: rgba(59, 130, 246, 0.1);
   color: #2563EB;
 }
 
-.article-status.status-pending {
+.blog-status.status-pending {
   background: var(--color-background-tertiary);
   color: var(--color-text-muted);
 }
@@ -598,7 +598,7 @@ onMounted(() => {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .articles-grid {
+  .blogs-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -630,7 +630,7 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 
-  .articles-grid {
+  .blogs-grid {
     grid-template-columns: 1fr;
   }
 
