@@ -123,6 +123,15 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseStatisticsVO_ = {
+    /** Code 状态码 */
+    code?: number
+    /** 响应数据 */
+    data?: StatisticsVO | null
+    /** Message 响应消息 */
+    message?: string
+  }
+
   type BaseResponseStr_ = {
     /** Code 状态码 */
     code?: number
@@ -282,6 +291,10 @@ declare namespace API {
     SESSION?: string | null
   }
 
+  type getStatisticsParams = {
+    SESSION?: string | null
+  }
+
   type getUserByIdParams = {
     id: number
   }
@@ -329,6 +342,29 @@ declare namespace API {
     title: string
     /** Points */
     points: string[]
+  }
+
+  type StatisticsVO = {
+    /** Todaycount */
+    todayCount: number
+    /** Weekcount */
+    weekCount: number
+    /** Monthcount */
+    monthCount: number
+    /** Totalcount */
+    totalCount: number
+    /** Successrate */
+    successRate: number
+    /** Avgdurationms */
+    avgDurationMs: number
+    /** Activeusercount */
+    activeUserCount: number
+    /** Totalusercount */
+    totalUserCount: number
+    /** Vipusercount */
+    vipUserCount: number
+    /** Quotaused */
+    quotaUsed: number
   }
 
   type TitleOption = {

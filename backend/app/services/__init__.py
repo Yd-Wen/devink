@@ -13,6 +13,7 @@ from app.services.image_svg import ImageSvgService
 from app.services.image_strategy import ImageStrategy
 from app.services.image_search import ImageSearchService
 from app.services.agent_log import AgentLogService
+from app.services.statistics import StatisticsService
 
 
 __all__ = [
@@ -29,4 +30,5 @@ __all__ = [
     "ImageStrategy",
     "ImageSearchService",
     "AgentLogService",
+    "StatisticsService",
 ]
