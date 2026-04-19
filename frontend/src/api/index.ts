@@ -4,9 +4,11 @@
 // API 唯一标识：
 import * as healthController from './healthController'
 import * as userController from './userController'
+import * as blogController from './blogController'
 import * as rootGet from './rootGet'
 export default {
   healthController,
   userController,
+  blogController,
   rootGet,
 }
