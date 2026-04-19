@@ -282,10 +282,10 @@ class BlogAgentService:
             logger.info(f"智能体5：所有配图生成并上传完成, count={len(image_results)}")
     
     def merge_images_into_content(self, state: BlogState):
-        """图文合成：根据占位符将配图插入正文（第 5 期：占位符方案）"""
+        """图文合成：根据占位符将配图插入正文"""
         with self._agent_log_context_sync(
             task_id=state.task_id,
-            agent_name="agent6_merge_content",
+            agent_name="merge_agent_merge_content",
             prompt="merge_images_into_content",
             input_data={"imagesCount": len(state.images or [])},
         ) as log_data:

@@ -73,6 +73,10 @@ class Settings(BaseSettings):
     svg_diagram_default_height: int = 600
     svg_diagram_folder: str = "svg-diagrams"
 
+    # 多智能体并行编排配置（并发数和失败策略）
+    agent_image_max_concurrency: int = 3
+    agent_image_fail_fast: bool = True
+
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE),
         env_file_encoding="utf-8",
