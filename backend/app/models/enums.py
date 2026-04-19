@@ -3,7 +3,7 @@
 from enum import Enum
 
 
-class ArticleStatusEnum(str, Enum):
+class BlogStatusEnum(str, Enum):
     """博客状态枚举"""
     
     PENDING = "PENDING"
@@ -12,11 +12,52 @@ class ArticleStatusEnum(str, Enum):
     FAILED = "FAILED"
 
 
+class BlogStyleEnum(str, Enum):
+    """文章风格枚举"""
+    
+    TECH = "tech"
+    EMOTIONAL = "emotional"
+    EDUCATIONAL = "educational"
+    HUMOROUS = "humorous"
+    
+    @classmethod
+    def is_valid(cls, value: Optional[str]) -> bool:
+        """校验是否为有效的风格值"""
+        if not value:
+            return True  # 允许为空
+        return value in [e.value for e in cls]
+
+
 class ImageMethodEnum(str, Enum):
     """配图方式枚举"""
     
     PEXELS = "PEXELS"
+    # NANO_BANANA = "NANO_BANANA"
+    MERMAID = "MERMAID"
+    ICONIFY = "ICONIFY"
+    EMOJI_PACK = "EMOJI_PACK"
+    SVG_DIAGRAM = "SVG_DIAGRAM"
     PICSUM = "PICSUM"
+    
+    def is_ai_generated(self) -> bool:
+        """是否为 AI 生图方式"""
+        return self in [
+            # ImageMethodEnum.NANO_BANANA,
+            ImageMethodEnum.MERMAID,
+            ImageMethodEnum.SVG_DIAGRAM
+        ]
+    
+    def is_fallback(self) -> bool:
+        """是否为降级方案"""
+        return self == ImageMethodEnum.PICSUM
+    
+    @classmethod
+    def get_default_search_method(cls):
+        return cls.PEXELS
+    
+    @classmethod
+    def get_fallback_method(cls):
+        return cls.PICSUM
 
 
 class SseMessageTypeEnum(str, Enum):

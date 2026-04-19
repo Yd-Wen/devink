@@ -15,9 +15,9 @@ from app.schemas.blog import (
     BlogVO,
 )
 from app.schemas.user import LoginUserVO
-from app.services.blog_service import BlogService
-from app.services.blog_async_service import blog_async_service
-from app.services.agent_log_service import AgentLogService
+from app.services.blog import BlogService
+from app.services.blog_async import blog_async_service
+from app.services.agent_log import AgentLogService
 from app.schemas.statistics import AgentExecutionStatsVO
 from app.deps import require_login
 from app.managers.sse_manager import sse_emitter_manager
@@ -45,8 +45,8 @@ async def create_blog(
     task_id = await service.create_blog_task_with_quota_check(
         request.topic,
         current_user,
-        request.style,  # 第 5 期新增
-        request.enabled_image_methods  # 第 5 期新增
+        request.style,  
+        request.enabled_image_methods  
     )
     
     # 异步执行阶段1：生成标题方案
@@ -55,6 +55,7 @@ async def create_blog(
             task_id,
             request.topic,
             request.style,
+            request.enabled_image_methods
         )
     )
     

@@ -23,6 +23,8 @@ dependencies = [
     "httpx==0.28.1",
     # "cos-python-sdk-v5==1.9.32",
     "alibabacloud-oss-v2==1.2.5",
+    "beautifulsoup4==4.12.3",
+    "lxml==5.3.0",
 ]
 
 [build-system]

@@ -50,6 +50,29 @@ class Settings(BaseSettings):
     alicloud_oss_bucket: str
     alicloud_oss_domain: str = ""
 
+    # Mermaid 配置
+    mermaid_cli_command: str = "mmdc"
+    mermaid_background_color: str = "transparent"
+    mermaid_output_format: str = "svg"
+    mermaid_width: int = 1200
+    mermaid_timeout: int = 30000
+
+    # Iconify 配置
+    iconify_api_url: str = "https://api.iconify.design"
+    iconify_search_limit: int = 10
+    iconify_default_height: int = 64
+    iconify_default_color: str = ""
+
+    # 表情包配置
+    emoji_pack_search_url: str = "https://cn.bing.com/images/async"
+    emoji_pack_suffix: str = "表情包"
+    emoji_pack_timeout: int = 10000
+
+    # SVG 示意图配置
+    svg_diagram_default_width: int = 800
+    svg_diagram_default_height: int = 600
+    svg_diagram_folder: str = "svg-diagrams"
+
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE),
         env_file_encoding="utf-8",

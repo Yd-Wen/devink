@@ -1,7 +1,13 @@
 class BlogAsyncService:
     """文章异步任务服务"""
     
-    async def execute_blog_generation(self, task_id: str, topic: str):
+    async def execute_blog_generation(
+        self, 
+        task_id: str, 
+        topic: str,
+        style: Optional[str] = None,
+        enabled_image_methods: Optional[List[str]] = None
+    ):
         """异步执行文章生成"""
         blog_agent_service = BlogAgentService()
         blog_service = BlogService(database)
@@ -14,6 +20,8 @@ class BlogAsyncService:
             state = BlogState()
             state.task_id = task_id
             state.topic = topic
+            state.style = style
+            state.enabled_image_methods = enabled_image_methods
             
             # 执行智能体编排，通过 SSE 推送进度
             await blog_agent_service.execute_blog_generation(

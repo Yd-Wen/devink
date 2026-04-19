@@ -37,6 +37,19 @@ class ImageRequirement(BaseModel):
     type: str
     section_title: str = Field(..., alias="sectionTitle")
     keywords: str
+    image_source: str = Field(..., alias="imageSource", description="图片来源")
+    prompt: str = Field(default="", description="AI 生图提示词")
+    placeholder_id: str = Field(..., alias="placeholderId", description="占位符ID")
+    
+    class Config:
+        populate_by_name = True
+
+
+class ImgReqAgentResult(BaseModel):
+    """配图分析智能体返回结果（第 5 期：占位符方案）"""
+    
+    content_with_placeholders: str = Field(..., alias="contentWithPlaceholders")
+    image_requirements: List[ImageRequirement] = Field(..., alias="imageRequirements")
     
     class Config:
         populate_by_name = True
@@ -69,3 +82,14 @@ class BlogState:
         self.images: Optional[List[ImageResult]] = None
         self.cover_image: Optional[str] = None
         self.full_content: Optional[str] = None
+
+
+class BlogCreateRequest(BaseModel):
+    """创建文章请求"""
+    
+    topic: str = Field(..., min_length=1, description="选题")
+    style: Optional[str] = Field(None, description="博客风格：tech/emotional/educational/humorous")
+    enabled_image_methods: Optional[List[str]] = Field(
+        None, alias="enabledImageMethods",
+        description="允许的配图方式列表（为空表示支持所有方式）"
+    )

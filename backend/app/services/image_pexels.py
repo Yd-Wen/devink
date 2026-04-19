@@ -1,4 +1,4 @@
-class PexelsService:
+class ImagePexelsService:
     """Pexels 图片检索服务"""
     
     def __init__(self):
