@@ -31,16 +31,6 @@ class BlogService:
 
     def __init__(self, db: Database):
         self.db = db
-        self._default_non_vip_image_methods = [
-            ImageMethodEnum.PEXELS.value,
-            ImageMethodEnum.MERMAID.value,
-            ImageMethodEnum.ICONIFY.value,
-            ImageMethodEnum.EMOJI_PACK.value,
-        ]
-        self._vip_only_image_methods = {
-            ImageMethodEnum.NANO_BANANA.value,
-            ImageMethodEnum.SVG_DIAGRAM.value,
-        }
 
     async def create_blog_task(
         self,
@@ -89,7 +79,8 @@ class BlogService:
         enabled_image_methods: Optional[List[str]] = None,
     ) -> str:
         """在同一事务中完成配额扣减和任务创建"""
-        if self._is_vip_or_admin(login_user):
+        # 管理员直接创建，不扣配额
+        if self._is_admin(login_user):
             return await self.create_blog_task(
                 topic=topic,
                 login_user=login_user,
@@ -97,6 +88,7 @@ class BlogService:
                 enabled_image_methods=enabled_image_methods,
             )
 
+        # 普通用户检查配额
         async with self.db.transaction():
             quota_row = await self.db.fetch_one(
                 query="""
@@ -108,7 +100,7 @@ class BlogService:
                 values={"userId": login_user.id},
             )
             throw_if_not(quota_row, ErrorCode.NOT_FOUND_ERROR, "用户不存在")
-            throw_if(quota_row["quota"] <= 0, ErrorCode.OPERATION_ERROR, "配额不足")
+            throw_if(quota_row["quota"] <= 0, ErrorCode.OPERATION_ERROR, "今日配额已用完，每天 0 点自动恢复")
 
             await self.db.execute(
                 query="""
@@ -343,11 +335,6 @@ class BlogService:
         throw_if_not(blog, ErrorCode.NOT_FOUND_ERROR, "博客不存在")
         self._check_blog_permission(blog, login_user)
         throw_if(
-            not self._is_vip_or_admin(login_user),
-            ErrorCode.NO_AUTH_ERROR,
-            "AI 修改大纲功能仅限 VIP 会员使用",
-        )
-        throw_if(
             blog["phase"] != BlogPhaseEnum.OUTLINE_EDITING.value,
             ErrorCode.OPERATION_ERROR,
             "当前阶段不允许 AI 修改大纲",
@@ -416,9 +403,9 @@ class BlogService:
         if blog["userId"] != login_user.id and login_user.user_role != UserConstant.ADMIN_ROLE:
             raise BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限访问")
 
-    def _is_vip_or_admin(self, login_user: LoginUserVO) -> bool:
-        """是否为 VIP 或管理员"""
-        return login_user.user_role in {UserConstant.ADMIN_ROLE, UserConstant.VIP_ROLE}
+    def _is_admin(self, login_user: LoginUserVO) -> bool:
+        """是否为管理员"""
+        return login_user.user_role == UserConstant.ADMIN_ROLE
 
     def _process_image_methods(
         self,
@@ -429,26 +416,16 @@ class BlogService:
         if enabled_image_methods:
             return enabled_image_methods
 
-        if self._is_vip_or_admin(login_user):
-            return None
-
-        return list(self._default_non_vip_image_methods)
+        return None
 
     def _validate_image_methods(
         self,
         enabled_image_methods: Optional[List[str]],
         login_user: LoginUserVO,
     ):
-        """校验普通用户高级配图权限"""
-        if not enabled_image_methods or self._is_vip_or_admin(login_user):
-            return
-
-        for method in enabled_image_methods:
-            if method in self._vip_only_image_methods:
-                raise BusinessException(
-                    ErrorCode.NO_AUTH_ERROR,
-                    "高级配图功能（AI 生图、SVG 图表）仅限 VIP 会员使用",
-                )
+        """校验配图方式合法性"""
+        # 所有配图方式对所有用户开放，无需额外权限校验
+        return
 
     def _to_blog_vo(self, blog) -> BlogVO:
         """转换为 BlogVO"""

@@ -6,5 +6,4 @@ class UserConstant:
 
     DEFAULT_ROLE = "user"
     ADMIN_ROLE = "admin"
-    VIP_ROLE = "vip"
     DEFAULT_QUOTA = 5

@@ -277,17 +277,12 @@ const renderUserChart = () => {
         },
         data: [
           {
-            value: stats.value.vipUserCount ?? 0,
-            name: 'VIP 会员',
-            itemStyle: { color: '#22C55E' }
-          },
-          {
             value: stats.value.activeUserCount ?? 0,
             name: '活跃用户',
             itemStyle: { color: '#3B82F6' }
           },
           {
-            value: (stats.value.totalUserCount ?? 0) - (stats.value.activeUserCount ?? 0) - (stats.value.vipUserCount ?? 0),
+            value: (stats.value.totalUserCount ?? 0) - (stats.value.activeUserCount ?? 0),
             name: '其他用户',
             itemStyle: { color: '#94A3B8' }
           }
@@ -307,6 +302,7 @@ const renderQuotaChart = () => {
     quotaChart = echarts.init(quotaChartRef.value)
   }
 
+  // 配额统计仅针对非管理员用户
   const totalQuota = (stats.value.totalUserCount ?? 0) * 5
   const usedQuota = stats.value.quotaUsed ?? 0
   const remainingQuota = Math.max(0, totalQuota - usedQuota)

@@ -122,7 +122,7 @@
                   title="确定要删除这篇博客吗?"
                   ok-text="确定"
                   cancel-text="取消"
-                  @confirm="deleteBlog(record)"
+                  @confirm="removeBlog(record)"
                 >
                   <a-button type="link" size="small" danger class="action-btn delete-btn">
                     <DeleteOutlined />
@@ -164,7 +164,7 @@ import {
   FileTextOutlined,
   RedoOutlined
 } from '@ant-design/icons-vue'
-import { listBlog, deleteBlog as deleteBlogApi, getBlog } from '@/api/blogController'
+import { listBlog, deleteBlog, getBlog } from '@/api/blogController'
 import dayjs, { type Dayjs } from 'dayjs'
 
 const router = useRouter()
@@ -329,9 +329,9 @@ const exportBlog = async (record: API.BlogVO) => {
 }
 
 // 删除博客
-const deleteBlog = async (record: API.BlogVO) => {
+const removeBlog = async (record: API.BlogVO) => {
   try {
-    await deleteBlogApi({ id: record.id })
+    await deleteBlog({ id: record.id })
     message.success('删除成功')
     loadData()
   } catch (error) {

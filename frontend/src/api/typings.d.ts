@@ -361,8 +361,6 @@ declare namespace API {
     activeUserCount: number
     /** Totalusercount */
     totalUserCount: number
-    /** Vipusercount */
-    vipUserCount: number
     /** Quotaused */
     quotaUsed: number
   }

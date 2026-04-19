@@ -67,9 +67,8 @@ class ImageMethodEnum(str, Enum):
     def is_ai_generated(self) -> bool:
         """是否为 AI 生图方式"""
         return self in [
-            # ImageMethodEnum.NANO_BANANA,
             ImageMethodEnum.MERMAID,
-            ImageMethodEnum.SVG_DIAGRAM
+            ImageMethodEnum.SVG
         ]
     
     def is_fallback(self) -> bool:

@@ -130,7 +130,6 @@ class UserService:
             userDescription=user_dict["userDescription"],
             userRole=user_dict["userRole"],
             quota=user_dict.get("quota"),
-            vipTime=user_dict["vipTime"].isoformat() if user_dict.get("vipTime") else None,
             createTime=user_dict["createTime"].isoformat(),
             updateTime=user_dict["updateTime"].isoformat()
         )
@@ -153,7 +152,6 @@ class UserService:
             userDescription=user_dict["userDescription"],
             userRole=user_dict["userRole"],
             quota=user_dict.get("quota"),
-            vipTime=user_dict["vipTime"].isoformat() if user_dict.get("vipTime") else None,
             createTime=user_dict["createTime"].isoformat()
         )
     
@@ -209,7 +207,6 @@ class UserService:
                     userDescription=user_dict["userDescription"],
                     userRole=user_dict["userRole"],
                     quota=user_dict.get("quota"),
-                    vipTime=user_dict["vipTime"].isoformat() if user_dict.get("vipTime") else None,
                     createTime=user_dict["createTime"].isoformat()
                 )
             )

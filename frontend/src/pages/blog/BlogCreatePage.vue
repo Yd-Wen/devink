@@ -82,27 +82,11 @@
                 </div>
                 <a-checkbox-group v-model:value="selectedImageMethods" class="methods-group">
                   <a-checkbox value="PEXELS">Pexels</a-checkbox>
-                  <a-tooltip :title="isVip ? '' : '仅限 VIP 会员'">
-                    <a-checkbox value="NANO_BANANA" :disabled="!isVip">
-                      Nano Banana
-                      <CrownOutlined v-if="!isVip" class="vip-icon" />
-                    </a-checkbox>
-                  </a-tooltip>
                   <a-checkbox value="MERMAID">Mermaid</a-checkbox>
                   <a-checkbox value="ICONIFY">Iconify</a-checkbox>
-                  <a-checkbox value="EMOJI_PACK">表情包</a-checkbox>
-                  <a-tooltip :title="isVip ? '' : '仅限 VIP 会员'">
-                    <a-checkbox value="SVG_DIAGRAM" :disabled="!isVip">
-                      SVG
-                      <CrownOutlined v-if="!isVip" class="vip-icon" />
-                    </a-checkbox>
-                  </a-tooltip>
+                  <a-checkbox value="EMOJI">表情包</a-checkbox>
+                  <a-checkbox value="SVG">SVG</a-checkbox>
                 </a-checkbox-group>
-                <div v-if="!isVip" class="vip-notice">
-                  <CrownOutlined />
-                  <span>AI 生图和 SVG 图表为 VIP 专属功能，</span>
-                  <RouterLink to="/vip" class="upgrade-link">立即升级</RouterLink>
-                </div>
               </div>
 
               <a-button
@@ -268,16 +252,12 @@
             <span class="quota-badge admin">管理员</span>
             <span class="quota-text">无限次</span>
           </div>
-          <div v-else-if="isVip" class="quota-admin">
-            <span class="quota-badge vip">VIP 会员</span>
-            <span class="quota-text">无限次</span>
-          </div>
           <div v-else class="quota-info">
             <div class="quota-display">
               <span class="quota-number" :class="{ 'low': quota <= 1, 'empty': quota === 0 }">{{ quota }}</span>
               <span class="quota-unit">次</span>
             </div>
-            <div class="quota-label">剩余可用</div>
+            <div class="quota-label">今日剩余</div>
             <a-progress
               :percent="(quota / 5) * 100"
               :show-info="false"
@@ -285,6 +265,7 @@
               size="small"
               class="quota-progress"
             />
+            <div class="quota-hint">每天 0 点自动恢复</div>
           </div>
         </div>
 
@@ -561,7 +542,7 @@ import {
 } from '@ant-design/icons-vue'
 import { createBlog, confirmTitle, confirmOutline } from '@/api/blogController'
 import { connectSSE, closeSSE, type SSEMessage } from '@/utils/sse'
-import { isAdmin as checkIsAdmin, isVip as checkIsVip, hasQuota as checkHasQuota } from '@/utils/permission'
+import { isAdmin as checkIsAdmin, hasQuota as checkHasQuota } from '@/utils/permission'
 import { marked } from 'marked'
 import TitleSelectingStage from './components/TitleSelectingStage.vue'
 import OutlineEditingStage from './components/OutlineEditingStage.vue'
@@ -572,7 +553,6 @@ const loginUserStore = useLoginUserStore()
 
 // 配额相关计算属性
 const isAdmin = computed(() => checkIsAdmin(loginUserStore.loginUser))
-const isVip = computed(() => checkIsVip(loginUserStore.loginUser))
 const quota = computed(() => loginUserStore.loginUser.quota ?? 0)
 const hasQuota = computed(() => checkHasQuota(loginUserStore.loginUser))
 
@@ -720,7 +700,7 @@ const startCreate = async () => {
   }
 
   if (!hasQuota.value) {
-    message.error('配额不足，无法创建博客')
+    message.error('今日配额已用完，每天 0 点自动恢复')
     return
   }
 
@@ -1663,6 +1643,13 @@ onBeforeUnmount(() => {
 .quota-progress {
   max-width: 120px;
   margin: 0 auto;
+}
+
+.quota-hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: center;
 }
 
 /* 热门选题 */

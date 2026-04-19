@@ -31,7 +31,7 @@ class ImageSvgService(ImageSearchService):
     async def generate_svg_diagram_data(self, requirement: str) -> Optional[ImageData]:
         """生成 SVG 概念示意图数据"""
         try:
-            prompt = PromptConstant.SVG_DIAGRAM_GENERATION_PROMPT.replace(
+            prompt = PromptConstant.SVG_GENERATION_PROMPT.replace(
                 "{requirement}", requirement
             )
             response = await self.client.chat.completions.create(
@@ -59,7 +59,7 @@ class ImageSvgService(ImageSearchService):
             return None
     
     def get_method(self) -> ImageMethodEnum:
-        return ImageMethodEnum.SVG_DIAGRAM
+        return ImageMethodEnum.SVG
     
     def get_fallback_image(self, position: int) -> str:
         return BlogConstant.PICSUM_URL_TEMPLATE.format(position)

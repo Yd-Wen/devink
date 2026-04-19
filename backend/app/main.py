@@ -1,6 +1,8 @@
 """FastAPI 主应用入口"""
 
+import asyncio
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -12,6 +14,26 @@ from app.exceptions import BusinessException, ErrorCode
 from app.utils.session import init_redis, close_redis
 
 
+async def _reset_quota_task():
+    """每日 0 点重置用户配额的定时任务"""
+    while True:
+        now = datetime.now()
+        next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        wait_seconds = (next_midnight - now).total_seconds()
+        await asyncio.sleep(wait_seconds)
+
+        try:
+            await database.execute(
+                query="UPDATE user SET quota = 5 WHERE userRole != 'admin'"
+            )
+            print(f"配额重置完成: {datetime.now()}")
+        except Exception as exc:
+            print(f"配额重置失败: {exc}")
+
+        # 等待24小时后再次执行
+        await asyncio.sleep(86400)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
@@ -20,9 +42,12 @@ async def lifespan(app: FastAPI):
     await init_redis()
     print(f"数据库连接成功: {settings.database_url}")
     print(f"Redis 连接成功: {settings.redis_url}")
-    
+
+    # 启动每日配额重置后台任务
+    asyncio.create_task(_reset_quota_task())
+
     yield
-    
+
     # 关闭时执行
     await database.disconnect()
     await close_redis()
