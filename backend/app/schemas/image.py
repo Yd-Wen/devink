@@ -1,3 +1,11 @@
+"""图片相关数据模型"""
+
+import base64
+from typing import Optional
+from enum import Enum
+from pydantic import BaseModel, Field
+
+
 class ImageRequest(BaseModel):
     """图片请求对象"""
     

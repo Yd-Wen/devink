@@ -1,3 +1,20 @@
+"""Mermaid 流程图生成服务（第 5 期新增）"""
+
+import logging
+import tempfile
+import subprocess
+from typing import Optional
+from pathlib import Path
+
+from app.config import settings
+from app.constants.blog import BlogConstant
+from app.models.enums import ImageMethodEnum
+from app.services.image_search import ImageSearchService
+from app.schemas.image import ImageData, ImageRequest
+
+logger = logging.getLogger(__name__)
+
+
 class ImageMermaidService(ImageSearchService):
     """Mermaid 流程图生成服务"""
     
@@ -65,4 +82,4 @@ class ImageMermaidService(ImageSearchService):
         return ImageMethodEnum.MERMAID
     
     def get_fallback_image(self, position: int) -> str:
-        return ArticleConstant.PICSUM_URL_TEMPLATE.format(position)
+        return BlogConstant.PICSUM_URL_TEMPLATE.format(position)

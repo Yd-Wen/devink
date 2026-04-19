@@ -1,3 +1,19 @@
+"""表情包检索服务"""
+
+import logging
+import httpx
+from typing import Optional
+from urllib.parse import quote
+from bs4 import BeautifulSoup
+
+from app.config import settings
+from app.constants.blog import BlogConstant
+from app.models.enums import ImageMethodEnum
+from app.services.image_search import ImageSearchService
+
+logger = logging.getLogger(__name__)
+
+
 class ImageEmojiService(ImageSearchService):
     """表情包检索服务（基于 Bing 图片搜索）"""
     
@@ -49,4 +65,4 @@ class ImageEmojiService(ImageSearchService):
         return ImageMethodEnum.EMOJI_PACK
     
     def get_fallback_image(self, position: int) -> str:
-        return ArticleConstant.PICSUM_URL_TEMPLATE.format(position)
+        return BlogConstant.PICSUM_URL_TEMPLATE.format(position)

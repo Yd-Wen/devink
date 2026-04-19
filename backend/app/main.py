@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import settings
 from app.database import database
-from app.routers import user_router, health_router
+from app.routers import user_router, health_router, blog_router
 from app.exceptions import BusinessException, ErrorCode
 from app.utils.session import init_redis, close_redis
 
@@ -77,6 +77,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 # 注册路由
 app.include_router(health_router, prefix="/api")
 app.include_router(user_router, prefix="/api")
+app.include_router(blog_router, prefix="/api")
 
 @app.get("/")
 async def root():

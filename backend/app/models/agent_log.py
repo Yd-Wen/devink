@@ -1,3 +1,11 @@
+"""智能体执行日志 ORM 模型"""
+
+from sqlalchemy import BigInteger, Column, DateTime, Integer, SmallInteger, String, Text
+from sqlalchemy.sql import func
+
+from app.database import Base
+
+
 class AgentLog(Base):
     """智能体执行日志表"""
 

@@ -1,6 +1,8 @@
 """枚举类型定义"""
 
 from enum import Enum
+from typing import Optional
+from decimal import Decimal
 
 
 class BlogStatusEnum(str, Enum):

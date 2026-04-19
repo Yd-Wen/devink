@@ -1,3 +1,17 @@
+"""Pexels 图片检索服务"""
+
+import httpx
+import logging
+from typing import Optional
+
+from app.config import settings
+from app.constants.blog import BlogConstant
+from app.models.enums import ImageMethodEnum
+from app.services.image_search import ImageSearchService
+
+logger = logging.getLogger(__name__)
+
+
 class ImagePexelsService:
     """Pexels 图片检索服务"""
     

@@ -4,7 +4,6 @@ import logging
 import httpx
 import uuid
 from typing import Optional
-from qcloud_cos import CosConfig, CosS3Client
 import alibabacloud_oss_v2 as oss
 from io import BytesIO
 

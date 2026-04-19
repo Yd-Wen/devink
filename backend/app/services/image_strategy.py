@@ -1,4 +1,4 @@
-"""图片服务策略选择器（第 5 期新增）"""
+"""图片服务策略选择器"""
 
 import logging
 from typing import Dict, List, Optional

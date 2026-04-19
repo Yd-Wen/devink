@@ -1,6 +1,6 @@
 """博客相关请求/响应模型"""
 
-from typing import Optional, List
+from typing import Optional, List, Any
 from pydantic import BaseModel, Field
 
 from app.schemas.common import PageRequest

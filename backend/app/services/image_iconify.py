@@ -1,3 +1,18 @@
+"""Iconify 图标库检索服务"""
+
+import logging
+import httpx
+from typing import Optional
+from urllib.parse import quote
+
+from app.config import settings
+from app.constants.blog import BlogConstant
+from app.models.enums import ImageMethodEnum
+from app.services.image_search import ImageSearchService
+
+logger = logging.getLogger(__name__)
+
+
 class ImageIconifyService(ImageSearchService):
     """Iconify 图标库检索服务"""
     
@@ -40,4 +55,4 @@ class ImageIconifyService(ImageSearchService):
         return ImageMethodEnum.ICONIFY
     
     def get_fallback_image(self, position: int) -> str:
-        return ArticleConstant.PICSUM_URL_TEMPLATE.format(position)
+        return BlogConstant.PICSUM_URL_TEMPLATE.format(position)
