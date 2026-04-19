@@ -119,7 +119,7 @@
           <div v-if="blog.outline && blog.outline.length > 0" class="outline-section">
             <h2 class="section-title">
               <OrderedListOutlined class="section-icon" />
-              文章大纲
+              博客大纲
             </h2>
             <div class="outline-list">
               <div v-for="item in blog.outline" :key="item.section" class="outline-item">
@@ -146,7 +146,7 @@
           <div v-else-if="blog.content" class="content-section">
             <h2 class="section-title">
               <FileTextOutlined class="section-icon" />
-              文章正文
+              博客正文
             </h2>
             <div v-html="markdownToHtml(blog.content)" class="markdown-content"></div>
           </div>
@@ -155,7 +155,7 @@
           <div v-if="!blog.fullContent && blog.images && blog.images.length > 0" class="images-section">
             <h2 class="section-title">
               <PictureOutlined class="section-icon" />
-              文章配图
+              博客配图
             </h2>
             <div class="images-grid">
               <div v-for="image in blog.images" :key="image.position" class="image-item">
@@ -208,11 +208,11 @@ const markdownToHtml = (markdown: string) => {
   return marked(markdown)
 }
 
-// 加载文章
+// 加载博客
 const loadBlog = async () => {
   const taskId = route.params.taskId as string
   if (!taskId) {
-    message.error('文章ID不存在')
+    message.error('博客ID不存在')
     return
   }
 
@@ -328,13 +328,13 @@ const getAgentDisplayName = (agentName: string) => {
   return nameMap[agentName] || agentName
 }
 
-// 重试（重新创建文章）
+// 重试（重新创建博客）
 const handleRetry = () => {
   if (!blog.value) return
 
   Modal.confirm({
     title: '确认重试',
-    content: '将使用相同的选题和配置重新创建文章，是否继续？',
+    content: '将使用相同的选题和配置重新创建博客，是否继续？',
     okText: '确认',
     cancelText: '取消',
     onOk: () => {

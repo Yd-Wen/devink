@@ -4,3 +4,6 @@ export const USER_ROLE_USER = 'user'
 
 // 默认值
 export const DEFAULT_USERNAME = '未登录'
+
+// 配额
+export const DEFAULT_QUOTA = 5

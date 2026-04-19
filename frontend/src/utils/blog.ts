@@ -1,52 +1,85 @@
-export interface SSEMessage {
-    type: string
-    data?: any
-    [key: string]: any
-}
+/**
+ * 博客相关工具函数
+ */
+import { STATUS_TEXT_MAP, STATUS_TAG_COLOR_MAP, STATUS_COLOR_MAP } from '@/constants/blog'
 
-export interface SSEOptions {
-    onMessage: (message: SSEMessage) => void
-    onError?: (error: Event) => void
-    onComplete?: () => void
+/**
+ * 获取状态文本
+ * @param status 状态值
+ */
+export const getStatusText = (status: string): string => {
+    return STATUS_TEXT_MAP[status] || status
 }
 
 /**
- * 建立 SSE 连接
+ * 获取状态标签颜色（用于 Ant Design Tag）
+ * @param status 状态值
  */
-export const connectSSE = (taskId: string, options: SSEOptions): EventSource => {
-    const { onMessage, onError, onComplete } = options
+export const getStatusTagColor = (status: string): string => {
+    return STATUS_TAG_COLOR_MAP[status] || 'default'
+}
 
-    const eventSource = new EventSource(`/api/blog/progress/${taskId}`)
+/**
+ * 获取状态颜色（用于自定义样式）
+ * @param status 状态值
+ */
+export const getStatusColor = (status: string): string => {
+    return STATUS_COLOR_MAP[status] || '#999'
+}
 
-    eventSource.onmessage = (event) => {
-        try {
-            const message: SSEMessage = JSON.parse(event.data)
-            onMessage(message)
+/**
+ * 导出博客为 Markdown 文件
+ * @param title 博客标题
+ * @param subTitle 副标题
+ * @param content 正文内容
+ * @param fullContent 完整图文内容（可选）
+ * @param outline 大纲（可选）
+ * @param images 配图列表（可选）
+ */
+export interface ExportBlogOptions {
+    title: string
+    subTitle?: string
+    content?: string
+    fullContent?: string
+    outline?: Array<{ section: number; title: string }>
+    images?: Array<{ description: string; url: string }>
+}
 
-            // 检查是否完成
-            if (message.type === 'ALL_COMPLETE' || message.type === 'ERROR') {
-                eventSource.close()
-                onComplete?.()
-            }
-        } catch (error) {
-            console.error('SSE 消息解析失败:', error)
+export const exportAsMarkdown = (options: ExportBlogOptions): void => {
+    const { title, subTitle, content, fullContent, outline, images } = options
+
+    let markdown = `# ${title}\n\n`
+    if (subTitle) {
+        markdown += `> ${subTitle}\n\n`
+    }
+
+    // 优先使用完整图文
+    if (fullContent) {
+        markdown += fullContent
+    } else {
+        if (outline && outline.length > 0) {
+            markdown += `## 目录\n\n`
+            outline.forEach((item) => {
+                markdown += `${item.section}. ${item.title}\n`
+            })
+            markdown += `\n---\n\n`
+        }
+
+        markdown += content || ''
+
+        if (images && images.length > 0) {
+            markdown += `\n\n## 配图\n\n`
+            images.forEach((image) => {
+                markdown += `![${image.description}](${image.url})\n\n`
+            })
         }
     }
 
-    eventSource.onerror = (error) => {
-        console.error('SSE 连接错误:', error)
-        onError?.(error)
-        eventSource.close()
-    }
-
-    return eventSource
-}
-
-/**
- * 关闭 SSE 连接
- */
-export const closeSSE = (eventSource: EventSource | null) => {
-    if (eventSource) {
-        eventSource.close()
-    }
+    const blob = new Blob([markdown], { type: 'text/markdown' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${title || '博客'}.md`
+    a.click()
+    URL.revokeObjectURL(url)
 }

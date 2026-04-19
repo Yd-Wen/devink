@@ -5,13 +5,13 @@
       <div class="header-container">
         <div class="header-content">
           <h1 class="page-title">历史记录</h1>
-          <p class="page-subtitle">管理您创作的所有文章</p>
+          <p class="page-subtitle">管理您创作的所有博客</p>
         </div>
         <a-button type="primary" size="large" @click="goToCreate" class="create-btn">
           <template #icon>
             <PlusOutlined />
           </template>
-          创作新文章
+          创作新博客
         </a-button>
       </div>
     </div>
@@ -22,7 +22,7 @@
         <div class="filter-left">
           <a-input-search
             v-model:value="searchKeyword"
-            placeholder="搜索文章标题..."
+            placeholder="搜索博客标题..."
             style="width: 280px"
             @search="handleSearch"
             @change="handleSearchChange"
@@ -58,7 +58,7 @@
         </div>
 
         <div class="filter-right">
-          <span class="total-count">共 {{ pagination.total }} 篇文章</span>
+          <span class="total-count">共 {{ pagination.total }} 篇博客</span>
         </div>
       </div>
 
@@ -119,7 +119,7 @@
                   导出
                 </a-button>
                 <a-popconfirm
-                  title="确定要删除这篇文章吗?"
+                  title="确定要删除这篇博客吗?"
                   ok-text="确定"
                   cancel-text="取消"
                   @confirm="deleteBlog(record)"
@@ -137,11 +137,11 @@
           <template #emptyText>
             <div class="empty-state">
               <FileTextOutlined class="empty-icon" />
-              <p class="empty-title">暂无文章</p>
-              <p class="empty-desc">开始创作您的第一篇文章吧</p>
+              <p class="empty-title">暂无博客</p>
+              <p class="empty-desc">开始创作您的第一篇博客吧</p>
               <a-button type="primary" @click="goToCreate">
                 <PlusOutlined />
-                创作新文章
+                创作新博客
               </a-button>
             </div>
           </template>
@@ -290,18 +290,18 @@ const handleTableChange = (pag: any) => {
   loadData()
 }
 
-// 查看文章
+// 查看博客
 const viewBlog = (record: API.BlogVO) => {
   router.push(`/blog/${record.taskId}`)
 }
 
-// 导出文章
+// 导出博客
 const exportBlog = async (record: API.BlogVO) => {
   try {
     const res = await getBlog({ taskId: record.taskId || '' })
     const blog = res.data.data
     if (!blog) {
-      message.error('文章数据不存在')
+      message.error('博客数据不存在')
       return
     }
 
@@ -318,7 +318,7 @@ const exportBlog = async (record: API.BlogVO) => {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `${blog.mainTitle || '文章'}.md`
+    a.download = `${blog.mainTitle || '博客'}.md`
     a.click()
     URL.revokeObjectURL(url)
 
@@ -328,7 +328,7 @@ const exportBlog = async (record: API.BlogVO) => {
   }
 }
 
-// 删除文章
+// 删除博客
 const deleteBlog = async (record: API.BlogVO) => {
   try {
     await deleteBlogApi({ id: record.id })
@@ -339,11 +339,11 @@ const deleteBlog = async (record: API.BlogVO) => {
   }
 }
 
-// 重试文章（重新创建）
+// 重试博客（重新创建）
 const retryBlog = (record: API.BlogVO) => {
   Modal.confirm({
     title: '确认重试',
-    content: `将使用相同的选题"${record.topic}"重新创建文章，是否继续？`,
+    content: `将使用相同的选题"${record.topic}"重新创建博客，是否继续？`,
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
