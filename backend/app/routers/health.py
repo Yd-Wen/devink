@@ -3,7 +3,10 @@
 from fastapi import APIRouter
 from app.schemas.common import BaseResponse
 
-router = APIRouter(prefix="/health", tags=["healthController"])
+router = APIRouter(
+    prefix="/health", 
+    tags=["healthController"]
+)
 
 
 @router.get("", response_model=BaseResponse[str])

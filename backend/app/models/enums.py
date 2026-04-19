@@ -12,6 +12,29 @@ class BlogStatusEnum(str, Enum):
     FAILED = "FAILED"
 
 
+class BlogPhaseEnum(str, Enum):
+    """博客阶段枚举"""
+
+    PENDING = "PENDING"
+    TITLE_GENERATING = "TITLE_GENERATING"
+    TITLE_SELECTING = "TITLE_SELECTING"
+    OUTLINE_GENERATING = "OUTLINE_GENERATING"
+    OUTLINE_EDITING = "OUTLINE_EDITING"
+    CONTENT_GENERATING = "CONTENT_GENERATING"
+
+    def can_transition_to(self, target_phase: "BlogPhaseEnum") -> bool:
+        """校验是否可流转到目标阶段"""
+        transitions = {
+            BlogPhaseEnum.PENDING: {BlogPhaseEnum.TITLE_GENERATING},
+            BlogPhaseEnum.TITLE_GENERATING: {BlogPhaseEnum.TITLE_SELECTING},
+            BlogPhaseEnum.TITLE_SELECTING: {BlogPhaseEnum.OUTLINE_GENERATING},
+            BlogPhaseEnum.OUTLINE_GENERATING: {BlogPhaseEnum.OUTLINE_EDITING},
+            BlogPhaseEnum.OUTLINE_EDITING: {BlogPhaseEnum.CONTENT_GENERATING},
+            BlogPhaseEnum.CONTENT_GENERATING: set(),
+        }
+        return target_phase in transitions.get(self, set())
+
+
 class BlogStyleEnum(str, Enum):
     """文章风格枚举"""
     
@@ -35,8 +58,8 @@ class ImageMethodEnum(str, Enum):
     # NANO_BANANA = "NANO_BANANA"
     MERMAID = "MERMAID"
     ICONIFY = "ICONIFY"
-    EMOJI_PACK = "EMOJI_PACK"
-    SVG_DIAGRAM = "SVG_DIAGRAM"
+    EMOJI = "EMOJI"
+    SVG = "SVG"
     PICSUM = "PICSUM"
     
     def is_ai_generated(self) -> bool:
@@ -64,7 +87,9 @@ class SseMessageTypeEnum(str, Enum):
     """SSE 消息类型枚举"""
     
     TITLE_AGENT_COMPLETE = "TITLE_AGENT_COMPLETE"    # 标题智能体完成（生成标题）
+    TITLES_GENERATED = "TITLES_GENERATED"            # 标题生成（等待用户选择）
     OUTLINE_AGENT_STREAMING = "OUTLINE_AGENT_STREAMING"  # 大纲智能体流式输出（大纲）
+    OUTLINE_GENERATED = "OUTLINE_GENERATED"              # 大纲生成（等待用户编辑）
     OUTLINE_AGENT_COMPLETE = "OUTLINE_AGENT_COMPLETE"    # 大纲智能体完成
     CONTENT_AGENT_STREAMING = "CONTENT_AGENT_STREAMING"  # 正文智能体流式输出（正文）
     CONTENT_AGENT_COMPLETE = "CONTENT_AGENT_COMPLETE"    # 正文智能体完成

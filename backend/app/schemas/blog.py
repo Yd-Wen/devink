@@ -6,6 +6,65 @@ from pydantic import BaseModel, Field
 from app.schemas.common import PageRequest
 
 
+class BlogCreateRequest(BaseModel):
+    """创建博客请求"""
+    
+    topic: str = Field(..., min_length=1, description="选题")
+    style: Optional[str] = Field(None, description="博客风格：tech/emotional/educational/humorous")
+    enabled_image_methods: Optional[List[str]] = Field(
+        None, alias="enabledImageMethods",
+        description="允许的配图方式列表（为空表示支持所有方式）"
+    )
+
+
+class BlogQueryRequest(PageRequest):
+    """博客查询请求"""
+    
+    id: Optional[int] = Field(None, description="博客 ID")
+    task_id: Optional[str] = Field(None, alias="taskId", description="任务 ID")
+    user_id: Optional[int] = Field(None, alias="userId", description="用户 ID")
+    topic: Optional[str] = Field(None, description="选题")
+    status: Optional[str] = Field(None, description="状态")
+
+
+class TitleOption(BaseModel):
+    """标题方案"""
+
+    main_title: str = Field(..., alias="mainTitle")
+    sub_title: str = Field(..., alias="subTitle")
+
+    class Config:
+        populate_by_name = True
+
+
+class BlogVO(BaseModel):
+    """博客视图对象"""
+    
+    id: int
+    task_id: str = Field(..., alias="taskId")
+    user_id: int = Field(..., alias="userId")
+    topic: str
+    user_description: Optional[str] = Field(None, alias="userDescription")
+    style: Optional[str] = None
+    main_title: Optional[str] = Field(None, alias="mainTitle")
+    sub_title: Optional[str] = Field(None, alias="subTitle")
+    title_options: Optional[List[TitleOption]] = Field(None, alias="titleOptions")
+    outline: Optional[List[Any]] = None
+    content: Optional[str] = None
+    full_content: Optional[str] = Field(None, alias="fullContent")
+    cover_image: Optional[str] = Field(None, alias="coverImage")
+    images: Optional[List[Any]] = None
+    status: str
+    phase: Optional[str] = None
+    error_message: Optional[str] = Field(None, alias="errorMessage")
+    create_time: str = Field(..., alias="createTime")
+    completed_time: Optional[str] = Field(None, alias="completedTime")
+    update_time: str = Field(..., alias="updateTime")
+    
+    class Config:
+        populate_by_name = True
+
+
 class TitleResult(BaseModel):
     """标题结果"""
     
@@ -45,16 +104,6 @@ class ImageRequirement(BaseModel):
         populate_by_name = True
 
 
-class ImgReqAgentResult(BaseModel):
-    """配图分析智能体返回结果（第 5 期：占位符方案）"""
-    
-    content_with_placeholders: str = Field(..., alias="contentWithPlaceholders")
-    image_requirements: List[ImageRequirement] = Field(..., alias="imageRequirements")
-    
-    class Config:
-        populate_by_name = True
-
-
 class ImageResult(BaseModel):
     """配图结果"""
     
@@ -64,6 +113,17 @@ class ImageResult(BaseModel):
     keywords: str
     section_title: str = Field(..., alias="sectionTitle")
     description: str
+    placeholder_id: str = Field(..., alias="placeholderId", description="占位符ID")
+    
+    class Config:
+        populate_by_name = True
+
+
+class ImgReqAgentResult(BaseModel):
+    """配图分析智能体返回结果"""
+    
+    content_with_placeholders: str = Field(..., alias="contentWithPlaceholders")
+    image_requirements: List[ImageRequirement] = Field(..., alias="imageRequirements")
     
     class Config:
         populate_by_name = True
@@ -75,6 +135,11 @@ class BlogState:
     def __init__(self):
         self.task_id: Optional[str] = None
         self.topic: Optional[str] = None
+        self.user_description: Optional[str] = None
+        self.style: Optional[str] = None
+        self.phase: Optional[str] = None
+        self.title_options: Optional[List[TitleOption]] = None
+        self.enabled_image_methods: Optional[List[str]] = None
         self.title: Optional[TitleResult] = None
         self.outline: Optional[OutlineResult] = None
         self.content: Optional[str] = None
@@ -84,12 +149,33 @@ class BlogState:
         self.full_content: Optional[str] = None
 
 
-class BlogCreateRequest(BaseModel):
-    """创建文章请求"""
-    
-    topic: str = Field(..., min_length=1, description="选题")
-    style: Optional[str] = Field(None, description="博客风格：tech/emotional/educational/humorous")
-    enabled_image_methods: Optional[List[str]] = Field(
-        None, alias="enabledImageMethods",
-        description="允许的配图方式列表（为空表示支持所有方式）"
-    )
+class BlogConfirmTitleRequest(BaseModel):
+    """确认标题请求"""
+
+    task_id: str = Field(..., alias="taskId", min_length=1)
+    selected_main_title: str = Field(..., alias="selectedMainTitle", min_length=1)
+    selected_sub_title: str = Field(..., alias="selectedSubTitle", min_length=1)
+    user_description: Optional[str] = Field(None, alias="userDescription")
+
+    class Config:
+        populate_by_name = True
+
+
+class BlogConfirmOutlineRequest(BaseModel):
+    """确认大纲请求"""
+
+    task_id: str = Field(..., alias="taskId", min_length=1)
+    outline: List[OutlineSection] = Field(..., min_length=1)
+
+    class Config:
+        populate_by_name = True
+
+
+class BlogAiModifyOutlineRequest(BaseModel):
+    """AI 修改大纲请求"""
+
+    task_id: str = Field(..., alias="taskId", min_length=1)
+    modify_suggestion: str = Field(..., alias="modifySuggestion", min_length=1)
+
+    class Config:
+        populate_by_name = True

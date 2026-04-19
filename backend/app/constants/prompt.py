@@ -5,20 +5,32 @@ class PromptConstant:
     TITLE_AGENT_PROMPT = """
 你是一位博客文章标题专家，擅长创作专业但吸引人的标题。
 
-根据以下选题，生成一个博客文章标题(主标题 + 副标题):
+根据以下选题，生成 3-5 个博客文章标题(主标题 + 副标题)方案:
 选题：{topic}
 
 要求:
-1. 主标题要包含数字、情绪化词汇，吸引眼球
-2. 副标题要补充说明，增强吸引力，有专业名词，体现专业性
-3. 标题要简洁有力，不超过30字
-4. 符合博客文章的风格
+1. 每个方案包含主标题和副标题
+2. 不同方案要有不同的切入角度
+3. 主标题要包含数字、情绪化词汇，吸引眼球
+4. 副标题要补充说明，增强吸引力，有专业名词，体现专业性
+5. 标题要简洁有力，不超过30字
+6. 符合博客文章的风格
 
 请直接返回 JSON 格式，不要有其他内容:
-{{
-  "mainTitle": "主标题"，
-  "subTitle": "副标题"
-}}
+[
+    {{
+    "mainTitle": "主标题1",
+    "subTitle": "副标题1"
+    }},
+    {{
+    "mainTitle": "主标题2",
+    "subTitle": "副标题2"
+    }},
+    {{
+    "mainTitle": "主标题3",
+    "subTitle": "副标题3"
+    }}
+]
 """
 
 # 大纲智能体：生成大纲
@@ -28,6 +40,7 @@ class PromptConstant:
 根据以下标题，生成文章大纲:
 主标题：{mainTitle}
 副标题：{subTitle}
+{descriptionSection}
 
 要求:
 1. 大纲要有清晰的逻辑结构
@@ -39,15 +52,21 @@ class PromptConstant:
 {{
   "sections": [
     {{
-      "section": 1，
-      "title": "章节标题"，
-      "points": ["要点1"， "要点2"]
+      "section": 1,
+      "title": "章节标题",
+      "points": ["要点1", "要点2"]
     }}
   ]
 }}
 """
 
-# 正文智能体：生成正文
+    # 用户补充描述段落
+    OUTLINE_AGENT_DESCRIPTION_SECTION = """
+用户补充要求：{userDescription}
+请在大纲中充分体现用户的补充要求。
+"""
+
+    # 正文智能体：生成正文
     CONTENT_AGENT_PROMPT = """
 你是一位资深的内容创作者，擅长撰写优质的博客文章。
 
@@ -87,15 +106,15 @@ class PromptConstant:
 请直接返回 JSON 格式，不要有其他内容:
 [
   {{
-    "position": 1，
-    "type": "cover"，
-    "sectionTitle": ""，
+    "position": 1,
+    "type": "cover",
+    "sectionTitle": "",
     "keywords": "AI technology office modern"
-  }}，
+  }},
   {{
-    "position": 2，
-    "type": "section"，
-    "sectionTitle": "章节标题（与正文完全一致）"，
+    "position": 2,
+    "type": "section",
+    "sectionTitle": "章节标题（与正文完全一致）",
     "keywords": "business success teamwork"
   }}
 ]
@@ -131,4 +150,36 @@ class PromptConstant:
 - 语言轻松活泼，幽默风趣
 - 善用网络流行语、俏皮话和有趣的比喻
 - 适当自嘲或调侃，增加趣味性
+"""
+
+    # AI 修改大纲 Prompt（第 6 期新增）
+    AI_MODIFY_OUTLINE_PROMPT = """
+你是一位专业的博客文章策划师,擅长根据用户反馈优化博客文章结构。
+当前博客信息：
+主标题：{mainTitle}
+副标题：{subTitle}
+
+当前大纲：
+{currentOutline}
+
+用户修改建议：
+{modifySuggestion}
+
+要求：
+1. 根据用户的修改建议，调整大纲结构
+2. 保持大纲的逻辑性和完整性
+3. 如果用户建议删除某章节，则删除；建议增加则增加；建议修改则修改
+4. 保持 JSON 格式不变
+5. 章节序号自动重新排序
+
+请直接返回修改后的 JSON 格式大纲，不要有其他内容：
+{{
+  "sections": [
+    {{
+      "section": 1,
+      "title": "章节标题",
+      "points": ["要点1", "要点2"]
+    }}
+  ]
+}}
 """

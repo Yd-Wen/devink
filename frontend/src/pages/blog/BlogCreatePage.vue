@@ -56,6 +56,35 @@
                 show-count
                 class="topic-textarea"
             />
+
+<!-- 文章风格选择 -->
+              <div class="style-section">
+                <div class="section-header">
+                  <span class="section-title">文章风格</span>
+                  <span class="section-tip">（不选择使用默认风格）</span>
+                </div>
+                <a-radio-group v-model:value="selectedStyle" class="style-group">
+                  <a-radio value="">默认</a-radio>
+                  <a-radio value="tech">科技风格</a-radio>
+                  <a-radio value="emotional">情感风格</a-radio>
+                  <a-radio value="educational">教育风格</a-radio>
+                  <a-radio value="humorous">轻松幽默</a-radio>
+                </a-radio-group>
+              </div>
+              <!-- 配图方式选择 -->
+              <div class="image-methods-section">
+                <div class="section-header">
+                  <span class="section-title">配图方式</span>
+                  <span class="section-tip">（不选择表示支持所有方式）</span>
+                </div>
+                <a-checkbox-group v-model:value="selectedImageMethods" class="methods-group">
+                  <a-checkbox value="PEXELS">Pexels</a-checkbox>
+                  <a-checkbox value="MERMAID">Mermaid</a-checkbox>
+                  <a-checkbox value="ICONIFY">Iconify</a-checkbox>
+                  <a-checkbox value="EMOJI_PACK">表情包</a-checkbox>
+                  <a-checkbox value="SVG_DIAGRAM">SVG</a-checkbox>
+                </a-checkbox-group>
+              </div>
             <a-button
                 type="primary"
                 size="large"

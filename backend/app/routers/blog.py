@@ -19,12 +19,14 @@ from app.services.blog import BlogService
 from app.services.blog_async import blog_async_service
 from app.services.agent_log import AgentLogService
 from app.schemas.statistics import AgentExecutionStatsVO
-from app.deps import require_login
-from app.managers.sse_manager import sse_emitter_manager
+from app.depends import require_login
+from app.managers.sse import sse_emitter_manager
 from app.exceptions import ErrorCode, throw_if
 
-router = APIRouter(prefix="/blog", tags=["博客管理"])
-
+router = APIRouter(
+    prefix="/blog", 
+    tags=["blogController"]
+)
 
 @router.post("/create", response_model=BaseResponse[str])
 async def create_blog(

@@ -21,7 +21,7 @@ from app.schemas.blog import (
     TitleOption,
 )
 from app.schemas.user import LoginUserVO
-from app.services.blog_agent_service import BlogAgentService
+from app.services.blog_agent import BlogAgentService
 
 logger = logging.getLogger(__name__)
 
