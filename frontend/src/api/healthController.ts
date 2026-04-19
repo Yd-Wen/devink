@@ -2,10 +2,10 @@
 /* eslint-disable */
 import request from '@/request'
 
-/** Health Check 健康检查 GET /api/health */
+/** Health Check 健康检查 GET /health */
 export async function healthCheck(options?: { [key: string]: any }) {
-  return request<API.BaseResponseStr_>('/api/health', {
-    method: 'GET',
-    ...(options || {}),
-  })
+    return request<API.BaseResponseStr_>('/health', {
+        method: 'GET',
+        ...(options || {}),
+    })
 }
