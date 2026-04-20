@@ -114,7 +114,7 @@ const handleConfirm = () => {
     mainTitle = customMainTitle.value
     subTitle = customSubTitle.value
   } else {
-    const selected = props.titleOptions[selectedIndex.value]
+    const selected = props.titleOptions[selectedIndex.value]!
     mainTitle = selected.mainTitle
     subTitle = selected.subTitle
   }

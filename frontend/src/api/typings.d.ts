@@ -1,469 +1,325 @@
 declare namespace API {
-  type addUserParams = {
-    SESSION?: string | null
-  }
+    type AgentExecutionStats = {
+        taskId?: string
+        totalDurationMs?: number
+        agentCount?: number
+        agentDurations?: Record<string, any>
+        overallStatus?: string
+        logs?: AgentLog[]
+    }
 
-  type AgentExecutionStatsVO = {
-    /** Taskid */
-    taskId: string
-    /** Totaldurationms */
-    totalDurationMs: number
-    /** Agentcount */
-    agentCount: number
-    /** Agentdurations */
-    agentDurations?: Record<string, any>
-    /** Overallstatus */
-    overallStatus: string
-    /** Logs */
-    logs?: AgentLogVO[]
-  }
+    type AgentLog = {
+        id?: number
+        taskId?: string
+        agentName?: string
+        startTime?: string
+        endTime?: string
+        durationMs?: number
+        status?: string
+        errorMessage?: string
+        prompt?: string
+        inputData?: string
+        outputData?: string
+        createTime?: string
+        updateTime?: string
+        isDelete?: number
+    }
 
-  type AgentLogVO = {
-    /** Id */
-    id: number
-    /** Taskid */
-    taskId: string
-    /** Agentname */
-    agentName: string
-    /** Starttime */
-    startTime: string
-    /** Endtime */
-    endTime?: string | null
-    /** Durationms */
-    durationMs?: number | null
-    /** Status */
-    status: string
-    /** Errormessage */
-    errorMessage?: string | null
-    /** Prompt */
-    prompt?: string | null
-    /** Inputdata */
-    inputData?: string | null
-    /** Outputdata */
-    outputData?: string | null
-    /** Createtime */
-    createTime: string
-    /** Updatetime */
-    updateTime: string
-  }
+    type BlogAiModifyOutlineRequest = {
+        taskId?: string
+        modifySuggestion?: string
+    }
 
-  type aiModifyOutlineParams = {
-    SESSION?: string | null
-  }
+    type BlogConfirmOutlineRequest = {
+        taskId?: string
+        outline?: OutlineSection[]
+    }
 
-  type BaseResponseAgentExecutionStatsVO_ = {
-    /** Code 状态码 */
-    code?: number
-    /** 响应数据 */
-    data?: AgentExecutionStatsVO | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BlogConfirmTitleRequest = {
+        taskId?: string
+        selectedMainTitle?: string
+        selectedSubTitle?: string
+        userDescription?: string
+    }
 
-  type BaseResponseBlogVO_ = {
-    /** Code 状态码 */
-    code?: number
-    /** 响应数据 */
-    data?: BlogVO | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BlogCreateRequest = {
+        topic?: string
+        style?: string
+        enabledImageMethods?: string[]
+    }
 
-  type BaseResponseBool_ = {
-    /** Code 状态码 */
-    code?: number
-    /** Data 响应数据 */
-    data?: boolean | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BlogQueryRequest = {
+        pageNum?: number
+        pageSize?: number
+        sortField?: string
+        sortOrder?: string
+        userId?: number
+        status?: string
+    }
 
-  type BaseResponseDict_ = {
-    /** Code 状态码 */
-    code?: number
-    /** Data 响应数据 */
-    data?: Record<string, any> | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BlogVO = {
+        id?: number
+        taskId?: string
+        userId?: number
+        topic?: string
+        userDescription?: string
+        mainTitle?: string
+        subTitle?: string
+        titleOptions?: TitleOption[]
+        outline?: OutlineItem[]
+        content?: string
+        fullContent?: string
+        coverImage?: string
+        images?: ImageItem[]
+        status?: string
+        phase?: string
+        errorMessage?: string
+        createTime?: string
+        completedTime?: string
+    }
 
-  type BaseResponseInt_ = {
-    /** Code 状态码 */
-    code?: number
-    /** Data 响应数据 */
-    data?: number | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponseAgentExecutionStats = {
+        code?: number
+        data?: AgentExecutionStats
+        message?: string
+    }
 
-  type BaseResponseList_ = {
-    /** Code 状态码 */
-    code?: number
-    /** Data 响应数据 */
-    data?: any[] | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponseBlogVO = {
+        code?: number
+        data?: BlogVO
+        message?: string
+    }
 
-  type BaseResponseLoginUserVO_ = {
-    /** Code 状态码 */
-    code?: number
-    /** 响应数据 */
-    data?: LoginUserVO | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponseBoolean = {
+        code?: number
+        data?: boolean
+        message?: string
+    }
 
-  type BaseResponseNoneType_ = {
-    /** Code 状态码 */
-    code?: number
-    /** Data 响应数据 */
-    data?: null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponseListOutlineSection = {
+        code?: number
+        data?: OutlineSection[]
+        message?: string
+    }
 
-  type BaseResponseStatisticsVO_ = {
-    /** Code 状态码 */
-    code?: number
-    /** 响应数据 */
-    data?: StatisticsVO | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponseLoginUserVO = {
+        code?: number
+        data?: LoginUserVO
+        message?: string
+    }
 
-  type BaseResponseStr_ = {
-    /** Code 状态码 */
-    code?: number
-    /** Data 响应数据 */
-    data?: string | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponseLong = {
+        code?: number
+        data?: number
+        message?: string
+    }
 
-  type BaseResponseUserVO_ = {
-    /** Code 状态码 */
-    code?: number
-    /** 响应数据 */
-    data?: UserVO | null
-    /** Message 响应消息 */
-    message?: string
-  }
+    type BaseResponsePageBlogVO = {
+        code?: number
+        data?: PageBlogVO
+        message?: string
+    }
 
-  type BlogAiModifyOutlineRequest = {
-    /** Taskid */
-    taskId: string
-    /** Modifysuggestion */
-    modifySuggestion: string
-  }
+    type BaseResponsePageUserVO = {
+        code?: number
+        data?: PageUserVO
+        message?: string
+    }
 
-  type BlogConfirmOutlineRequest = {
-    /** Taskid */
-    taskId: string
-    /** Outline */
-    outline: OutlineSection[]
-  }
+    type BaseResponseStatisticsVO = {
+        code?: number
+        data?: StatisticsVO
+        message?: string
+    }
 
-  type BlogConfirmTitleRequest = {
-    /** Taskid */
-    taskId: string
-    /** Selectedmaintitle */
-    selectedMainTitle: string
-    /** Selectedsubtitle */
-    selectedSubTitle: string
-    /** Userdescription */
-    userDescription?: string | null
-  }
+    type BaseResponseString = {
+        code?: number
+        data?: string
+        message?: string
+    }
 
-  type BlogCreateRequest = {
-    /** Topic 选题 */
-    topic: string
-    /** Style 博客风格：tech/emotional/educational/humorous */
-    style?: string | null
-    /** Enabledimagemethods 允许的配图方式列表（为空表示支持所有方式） */
-    enabledImageMethods?: string[] | null
-  }
+    type BaseResponseUser = {
+        code?: number
+        data?: User
+        message?: string
+    }
 
-  type BlogQueryRequest = {
-    /** Current 当前页码 */
-    current?: number
-    /** Pagesize 每页大小 */
-    pageSize?: number
-    /** Sortfield 排序字段 */
-    sortField?: string | null
-    /** Sortorder 排序顺序 */
-    sortOrder?: string | null
-    /** Id 博客 ID */
-    id?: number | null
-    /** Taskid 任务 ID */
-    taskId?: string | null
-    /** Userid 用户 ID */
-    userId?: number | null
-    /** Topic 选题 */
-    topic?: string | null
-    /** Status 状态 */
-    status?: string | null
-  }
+    type BaseResponseUserVO = {
+        code?: number
+        data?: UserVO
+        message?: string
+    }
 
-  type BlogVO = {
-    /** Id */
-    id: number
-    /** Taskid */
-    taskId: string
-    /** Userid */
-    userId: number
-    /** Topic */
-    topic: string
-    /** Userdescription */
-    userDescription?: string | null
-    /** Style */
-    style?: string | null
-    /** Maintitle */
-    mainTitle?: string | null
-    /** Subtitle */
-    subTitle?: string | null
-    /** Titleoptions */
-    titleOptions?: TitleOption[] | null
-    /** Outline */
-    outline?: any[] | null
-    /** Content */
-    content?: string | null
-    /** Fullcontent */
-    fullContent?: string | null
-    /** Coverimage */
-    coverImage?: string | null
-    /** Images */
-    images?: any[] | null
-    /** Status */
-    status: string
-    /** Phase */
-    phase?: string | null
-    /** Errormessage */
-    errorMessage?: string | null
-    /** Createtime */
-    createTime: string
-    /** Completedtime */
-    completedTime?: string | null
-    /** Updatetime */
-    updateTime: string
-  }
+    type BaseResponseVoid = {
+        code?: number
+        data?: Record<string, any>
+        message?: string
+    }
 
-  type confirmOutlineParams = {
-    SESSION?: string | null
-  }
+    type DeleteRequest = {
+        id?: number
+    }
 
-  type confirmTitleParams = {
-    SESSION?: string | null
-  }
+    type getBlogParams = {
+        taskId: string
+    }
 
-  type createBlogParams = {
-    SESSION?: string | null
-  }
+    type getExecutionLogsParams = {
+        taskId: string
+    }
 
-  type deleteBlogParams = {
-    SESSION?: string | null
-  }
+    type getProgressParams = {
+        taskId: string
+    }
 
-  type DeleteRequest = {
-    /** Id 删除项的 ID */
-    id: number
-  }
+    type getUserByIdParams = {
+        id: number
+    }
 
-  type deleteUserParams = {
-    SESSION?: string | null
-  }
+    type getUserVOByIdParams = {
+        id: number
+    }
 
-  type getBlogParams = {
-    task_id: string
-    SESSION?: string | null
-  }
+    type ImageItem = {
+        position?: number
+        url?: string
+        method?: string
+        keywords?: string
+        sectionTitle?: string
+        description?: string
+    }
 
-  type getExecutionLogsParams = {
-    task_id: string
-  }
+    type LoginUserVO = {
+        id?: number
+        userAccount?: string
+        userName?: string
+        userAvatar?: string
+        userProfile?: string
+        userRole?: string
+        quota?: number
+        vipTime?: string
+        createTime?: string
+        updateTime?: string
+    }
 
-  type getLoginUserParams = {
-    SESSION?: string | null
-  }
+    type OutlineItem = {
+        section?: number
+        title?: string
+        points?: string[]
+    }
 
-  type getProgressParams = {
-    task_id: string
-    SESSION?: string | null
-  }
+    type OutlineSection = {
+        section?: number
+        title?: string
+        points?: string[]
+    }
 
-  type getStatisticsParams = {
-    SESSION?: string | null
-  }
+    type PageBlogVO = {
+        records?: BlogVO[]
+        pageNumber?: number
+        pageSize?: number
+        totalPage?: number
+        totalRow?: number
+        optimizeCountQuery?: boolean
+    }
 
-  type getUserByIdParams = {
-    id: number
-  }
+    type PageUserVO = {
+        records?: UserVO[]
+        pageNumber?: number
+        pageSize?: number
+        totalPage?: number
+        totalRow?: number
+        optimizeCountQuery?: boolean
+    }
 
-  type HTTPValidationError = {
-    /** Detail */
-    detail?: ValidationError[]
-  }
+    type refundParams = {
+        reason?: string
+    }
 
-  type listBlogParams = {
-    SESSION?: string | null
-  }
+    type SseEmitter = {
+        timeout?: number
+    }
 
-  type listUsersByPageParams = {
-    SESSION?: string | null
-  }
+    type StatisticsVO = {
+        todayCount?: number
+        weekCount?: number
+        monthCount?: number
+        totalCount?: number
+        successRate?: number
+        avgDurationMs?: number
+        activeUserCount?: number
+        totalUserCount?: number
+        vipUserCount?: number
+        quotaUsed?: number
+    }
 
-  type LoginUserVO = {
-    /** Id */
-    id: number
-    /** Useraccount */
-    userAccount: string
-    /** Username */
-    userName?: string | null
-    /** Useravatar */
-    userAvatar?: string | null
-    /** Userprofile */
-    userProfile?: string | null
-    /** Userrole */
-    userRole: string
-    /** Createtime */
-    createTime: string
-    /** Updatetime */
-    updateTime: string
-  }
+    type TitleOption = {
+        mainTitle?: string
+        subTitle?: string
+    }
 
-  type logoutParams = {
-    SESSION?: string | null
-  }
+    type User = {
+        id?: number
+        userAccount?: string
+        userPassword?: string
+        userName?: string
+        userAvatar?: string
+        userProfile?: string
+        userRole?: string
+        quota?: number
+        vipTime?: string
+        editTime?: string
+        createTime?: string
+        updateTime?: string
+        isDelete?: number
+    }
 
-  type OutlineSection = {
-    /** Section */
-    section: number
-    /** Title */
-    title: string
-    /** Points */
-    points: string[]
-  }
+    type UserAddRequest = {
+        userName?: string
+        userAccount?: string
+        userAvatar?: string
+        userProfile?: string
+        userRole?: string
+    }
 
-  type StatisticsVO = {
-    /** Todaycount */
-    todayCount: number
-    /** Weekcount */
-    weekCount: number
-    /** Monthcount */
-    monthCount: number
-    /** Totalcount */
-    totalCount: number
-    /** Successrate */
-    successRate: number
-    /** Avgdurationms */
-    avgDurationMs: number
-    /** Activeusercount */
-    activeUserCount: number
-    /** Totalusercount */
-    totalUserCount: number
-    /** Quotaused */
-    quotaUsed: number
-  }
+    type UserLoginRequest = {
+        userAccount?: string
+        userPassword?: string
+    }
 
-  type TitleOption = {
-    /** Maintitle */
-    mainTitle: string
-    /** Subtitle */
-    subTitle: string
-  }
+    type UserQueryRequest = {
+        pageNum?: number
+        pageSize?: number
+        sortField?: string
+        sortOrder?: string
+        id?: number
+        userName?: string
+        userAccount?: string
+        userProfile?: string
+        userRole?: string
+    }
 
-  type updateUserParams = {
-    SESSION?: string | null
-  }
+    type UserRegisterRequest = {
+        userAccount?: string
+        userPassword?: string
+        checkPassword?: string
+    }
 
-  type UserAddRequest = {
-    /** Useraccount 账号 */
-    userAccount: string
-    /** Userpassword 密码 */
-    userPassword: string
-    /** Username 用户昵称 */
-    userName?: string | null
-    /** Useravatar 用户头像 */
-    userAvatar?: string | null
-    /** Userprofile 用户简介 */
-    userProfile?: string | null
-    /** Userrole 用户角色 */
-    userRole?: string
-  }
+    type UserUpdateRequest = {
+        id?: number
+        userName?: string
+        userAvatar?: string
+        userProfile?: string
+        userRole?: string
+    }
 
-  type UserLoginRequest = {
-    /** Useraccount 账号 */
-    userAccount: string
-    /** Userpassword 密码 */
-    userPassword: string
-  }
-
-  type UserQueryRequest = {
-    /** Current 当前页码 */
-    current?: number
-    /** Pagesize 每页大小 */
-    pageSize?: number
-    /** Sortfield 排序字段 */
-    sortField?: string | null
-    /** Sortorder 排序顺序 */
-    sortOrder?: string | null
-    /** Id 用户 ID */
-    id?: number | null
-    /** Useraccount 账号 */
-    userAccount?: string | null
-    /** Username 用户昵称 */
-    userName?: string | null
-    /** Userprofile 用户简介 */
-    userProfile?: string | null
-    /** Userrole 用户角色 */
-    userRole?: string | null
-  }
-
-  type UserRegisterRequest = {
-    /** Useraccount 账号 */
-    userAccount: string
-    /** Userpassword 密码 */
-    userPassword: string
-    /** Checkpassword 确认密码 */
-    checkPassword: string
-  }
-
-  type UserUpdateRequest = {
-    /** Id 用户 ID */
-    id: number
-    /** Username 用户昵称 */
-    userName?: string | null
-    /** Useravatar 用户头像 */
-    userAvatar?: string | null
-    /** Userprofile 用户简介 */
-    userProfile?: string | null
-    /** Userrole 用户角色 */
-    userRole?: string | null
-  }
-
-  type UserVO = {
-    /** Id */
-    id: number
-    /** Useraccount */
-    userAccount: string
-    /** Username */
-    userName?: string | null
-    /** Useravatar */
-    userAvatar?: string | null
-    /** Userprofile */
-    userProfile?: string | null
-    /** Userrole */
-    userRole: string
-    /** Createtime */
-    createTime: string
-  }
-
-  type ValidationError = {
-    /** Location */
-    loc: (string | number)[]
-    /** Message */
-    msg: string
-    /** Error Type */
-    type: string
-  }
+    type UserVO = {
+        id?: number
+        userAccount?: string
+        userName?: string
+        userAvatar?: string
+        userProfile?: string
+        userRole?: string
+        createTime?: string
+    }
 }

@@ -2,49 +2,37 @@
 /* eslint-disable */
 import request from '@/request'
 
-/** Add User 添加用户（管理员） POST /user/add */
-export async function addUser(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.addUserParams,
-    body: API.UserAddRequest,
-    options?: { [key: string]: any }
-) {
-    return request<API.BaseResponseInt_>('/user/add', {
+/** 此处后端没有提供注释 POST /user/add */
+export async function addUser(body: API.UserAddRequest, options?: { [key: string]: any }) {
+    return request<API.BaseResponseLong>('/user/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
 }
 
-/** Delete User 删除用户（管理员） POST /user/delete */
-export async function deleteUser(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.deleteUserParams,
-    body: API.DeleteRequest,
-    options?: { [key: string]: any }
-) {
-    return request<API.BaseResponseBool_>('/user/delete', {
+/** 此处后端没有提供注释 POST /user/delete */
+export async function deleteUser(body: API.DeleteRequest, options?: { [key: string]: any }) {
+    return request<API.BaseResponseBoolean>('/user/delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
 }
 
-/** Get User By Id 根据 ID 获取用户 GET /user/get */
+/** 此处后端没有提供注释 GET /user/get */
 export async function getUserById(
     // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
     params: API.getUserByIdParams,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseUserVO_>('/user/get', {
+    return request<API.BaseResponseUser>('/user/get', {
         method: 'GET',
         params: {
             ...params,
@@ -53,40 +41,35 @@ export async function getUserById(
     })
 }
 
-/** Get Login User 获取当前登录用户 GET /user/get/login */
-export async function getLoginUser(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.getLoginUserParams,
-    options?: { [key: string]: any }
-) {
-    return request<API.BaseResponseLoginUserVO_>('/user/get/login', {
+/** 此处后端没有提供注释 GET /user/get/login */
+export async function getLoginUser(options?: { [key: string]: any }) {
+    return request<API.BaseResponseLoginUserVO>('/user/get/login', {
         method: 'GET',
-        params: { ...params },
         ...(options || {}),
     })
 }
 
-/** List Users By Page 分页查询用户列表（管理员） POST /user/list/page */
-export async function listUsersByPage(
+/** 此处后端没有提供注释 GET /user/get/vo */
+export async function getUserVoById(
     // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.listUsersByPageParams,
+    params: API.getUserVOByIdParams,
+    options?: { [key: string]: any }
+) {
+    return request<API.BaseResponseUserVO>('/user/get/vo', {
+        method: 'GET',
+        params: {
+            ...params,
+        },
+        ...(options || {}),
+    })
+}
+
+/** 此处后端没有提供注释 POST /user/list/page/vo */
+export async function listUserVoByPage(
     body: API.UserQueryRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseDict_>('/user/list/page', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        params: { ...params },
-        data: body,
-        ...(options || {}),
-    })
-}
-
-/** Login 用户登录 POST /user/login */
-export async function login(body: API.UserLoginRequest, options?: { [key: string]: any }) {
-    return request<API.BaseResponseLoginUserVO_>('/user/login', {
+    return request<API.BaseResponsePageUserVO>('/user/list/page/vo', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -96,22 +79,32 @@ export async function login(body: API.UserLoginRequest, options?: { [key: string
     })
 }
 
-/** Logout 用户登出 POST /user/logout */
-export async function logout(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.logoutParams,
+/** 此处后端没有提供注释 POST /user/login */
+export async function userLogin(body: API.UserLoginRequest, options?: { [key: string]: any }) {
+    return request<API.BaseResponseLoginUserVO>('/user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: body,
+        ...(options || {}),
+    })
+}
+
+/** 此处后端没有提供注释 POST /user/logout */
+export async function userLogout(options?: { [key: string]: any }) {
+    return request<API.BaseResponseBoolean>('/user/logout', {
+        method: 'POST',
+        ...(options || {}),
+    })
+}
+
+/** 此处后端没有提供注释 POST /user/register */
+export async function userRegister(
+    body: API.UserRegisterRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseBool_>('/user/logout', {
-        method: 'POST',
-        params: { ...params },
-        ...(options || {}),
-    })
-}
-
-/** Register 用户注册 POST /user/register */
-export async function register(body: API.UserRegisterRequest, options?: { [key: string]: any }) {
-    return request<API.BaseResponseInt_>('/user/register', {
+    return request<API.BaseResponseLong>('/user/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -121,19 +114,13 @@ export async function register(body: API.UserRegisterRequest, options?: { [key: 
     })
 }
 
-/** Update User 更新用户（管理员） POST /user/update */
-export async function updateUser(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.updateUserParams,
-    body: API.UserUpdateRequest,
-    options?: { [key: string]: any }
-) {
-    return request<API.BaseResponseBool_>('/user/update', {
+/** 此处后端没有提供注释 POST /user/update */
+export async function updateUser(body: API.UserUpdateRequest, options?: { [key: string]: any }) {
+    return request<API.BaseResponseBoolean>('/user/update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })

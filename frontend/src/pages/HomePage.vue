@@ -551,6 +551,9 @@ onMounted(() => {
   color: var(--color-text);
   line-height: 1.4;
   display: -webkit-box;
+  /* 标准属性（现代浏览器） */
+  line-clamp: 2;
+  /* 前缀版本（Safari/旧版浏览器兼容） */
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

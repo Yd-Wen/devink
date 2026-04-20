@@ -5,7 +5,7 @@
         <RouterLink to="/" class="logo-link">
           <div class="logo-wrapper">
             <img src="@/assets/logo.png" alt="Logo" class="logo-img" />
-            <h1 class="site-title">AI文章创作器</h1>
+            <h1 class="site-title">AI 博客创作助手</h1>
           </div>
         </RouterLink>
       </div>
@@ -56,7 +56,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { useLoginUserStore } from '@/stores/loginUser.ts'
-import { logout } from '@/api/userController.ts'
+import { userLogout } from '@/api/userController.ts'
 import {
   LogoutOutlined,
   HomeOutlined,
@@ -119,7 +119,7 @@ const menuItems = computed(() => {
 
 // 退出登录
 const doLogout = async () => {
-  const res = await logout()
+  const res = await userLogout()
   if (res.data.code === 0) {
     loginUserStore.setLoginUser({
       userName: '未登录',

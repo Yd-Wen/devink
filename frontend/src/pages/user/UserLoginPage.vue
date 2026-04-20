@@ -84,7 +84,7 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
-import { login } from '@/api/userController.ts'
+import { userLogin } from '@/api/userController.ts'
 import { useLoginUserStore } from '@/stores/loginUser.ts'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
@@ -103,7 +103,7 @@ const loginUserStore = useLoginUserStore()
  * @param values
  */
 const handleSubmit = async (values: any) => {
-  const res = await login(values)
+  const res = await userLogin(values)
   // 登录成功，把登录态保存到全局状态中
   if (res.data.code === 0 && res.data.data) {
     await loginUserStore.fetchLoginUser()

@@ -8,8 +8,8 @@ export async function getBlog(
     params: API.getBlogParams,
     options?: { [key: string]: any }
 ) {
-    const { task_id: param0, ...queryParams } = params
-    return request<API.BaseResponseBlogVO_>(`/blog/${param0}`, {
+    const { taskId: param0, ...queryParams } = params
+    return request<API.BaseResponseBlogVO>(`/blog/${param0}`, {
         method: 'GET',
         params: { ...queryParams },
         ...(options || {}),
@@ -18,17 +18,14 @@ export async function getBlog(
 
 /** Ai Modify Outline AI 修改大纲 POST /blog/ai-modify-outline */
 export async function aiModifyOutline(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.aiModifyOutlineParams,
     body: API.BlogAiModifyOutlineRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseList_>('/blog/ai-modify-outline', {
+    return request<API.BaseResponseListOutlineSection>('/blog/ai-modify-outline', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
@@ -36,17 +33,14 @@ export async function aiModifyOutline(
 
 /** Confirm Outline 确认大纲 POST /blog/confirm-outline */
 export async function confirmOutline(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.confirmOutlineParams,
     body: API.BlogConfirmOutlineRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseNoneType_>('/blog/confirm-outline', {
+    return request<API.BaseResponseVoid>('/blog/confirm-outline', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
@@ -54,17 +48,14 @@ export async function confirmOutline(
 
 /** Confirm Title 确认标题并输入补充描述 POST /blog/confirm-title */
 export async function confirmTitle(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.confirmTitleParams,
     body: API.BlogConfirmTitleRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseNoneType_>('/blog/confirm-title', {
+    return request<API.BaseResponseVoid>('/blog/confirm-title', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
@@ -72,17 +63,14 @@ export async function confirmTitle(
 
 /** Create Blog 创建博客任务 POST /blog/create */
 export async function createBlog(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.createBlogParams,
     body: API.BlogCreateRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseStr_>('/blog/create', {
+    return request<API.BaseResponseString>('/blog/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
@@ -90,17 +78,14 @@ export async function createBlog(
 
 /** Delete Blog 删除博客 POST /blog/delete */
 export async function deleteBlog(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.deleteBlogParams,
     body: API.DeleteRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseBool_>('/blog/delete', {
+    return request<API.BaseResponseBoolean>('/blog/delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
@@ -112,8 +97,8 @@ export async function getExecutionLogs(
     params: API.getExecutionLogsParams,
     options?: { [key: string]: any }
 ) {
-    const { task_id: param0, ...queryParams } = params
-    return request<API.BaseResponseAgentExecutionStatsVO_>(`/blog/execution-logs/${param0}`, {
+    const { taskId: param0, ...queryParams } = params
+    return request<API.BaseResponseAgentExecutionStats>(`/blog/execution-logs/${param0}`, {
         method: 'GET',
         params: { ...queryParams },
         ...(options || {}),
@@ -122,17 +107,14 @@ export async function getExecutionLogs(
 
 /** List Blog 分页查询博客列表 POST /blog/list */
 export async function listBlog(
-    // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-    params: API.listBlogParams,
     body: API.BlogQueryRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseDict_>('/blog/list', {
+    return request<API.BaseResponsePageBlogVO>('/blog/list', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        params: { ...params },
         data: body,
         ...(options || {}),
     })
@@ -144,7 +126,7 @@ export async function getProgress(
     params: API.getProgressParams,
     options?: { [key: string]: any }
 ) {
-    const { task_id: param0, ...queryParams } = params
+    const { taskId: param0, ...queryParams } = params
     return request<any>(`/blog/progress/${param0}`, {
         method: 'GET',
         params: { ...queryParams },

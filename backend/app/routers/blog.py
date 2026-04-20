@@ -57,7 +57,6 @@ async def create_blog(
             task_id,
             request.topic,
             request.style,
-            request.enabled_image_methods
         )
     )
     

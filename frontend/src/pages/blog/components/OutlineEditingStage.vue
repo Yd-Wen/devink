@@ -122,7 +122,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { CheckOutlined, DeleteOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import Sortable from 'sortablejs'
@@ -180,10 +180,10 @@ onMounted(() => {
       Sortable.create(outlineListRef.value, {
         animation: 150,
         handle: '.drag-handle',
-        onEnd: (evt) => {
+        onEnd: (evt: Sortable.SortableEvent) => {
           const { oldIndex, newIndex } = evt
           if (oldIndex !== undefined && newIndex !== undefined) {
-            const item = outlineSections.value.splice(oldIndex, 1)[0]
+            const item = outlineSections.value.splice(oldIndex, 1)[0]!
             outlineSections.value.splice(newIndex, 0, item)
             // 更新 section 序号
             outlineSections.value.forEach((sec, idx) => {
@@ -214,11 +214,11 @@ const deleteSection = (index: number) => {
 }
 
 const addPoint = (sectionIndex: number) => {
-  outlineSections.value[sectionIndex].points.push('')
+  outlineSections.value[sectionIndex]!.points.push('')
 }
 
 const deletePoint = (sectionIndex: number, pointIndex: number) => {
-  const section = outlineSections.value[sectionIndex]
+  const section = outlineSections.value[sectionIndex]!
   if (section.points.length > 1) {
     section.points.splice(pointIndex, 1)
   }
