@@ -1,6 +1,7 @@
 /**
  * SSE 工具函数
  */
+import { API_BASE_URL } from '@/config/env'
 
 export interface SSEMessage {
     type: string
@@ -20,7 +21,7 @@ export interface SSEOptions {
 export const connectSSE = (taskId: string, options: SSEOptions): EventSource => {
     const { onMessage, onError, onComplete } = options
 
-    const eventSource = new EventSource(`/api/article/progress/${taskId}`)
+    const eventSource = new EventSource(`${API_BASE_URL}/blog/progress/${taskId}`)
 
     eventSource.onmessage = (event) => {
         try {

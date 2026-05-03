@@ -34,7 +34,7 @@ class ImageStrategy:
     
     def __init__(self):
         self.service_map: Dict[ImageMethodEnum, ImageSearchService] = {}
-        self.oss_service = ossService()
+        self.oss_service = OssService()
         self._register_services()
     
     def _register_services(self):
@@ -78,7 +78,7 @@ class ImageStrategy:
     async def _handle_fallback_with_upload(self, position: Optional[int]) -> ImageResult:
         """处理降级逻辑（降级图片也上传到 OSS）"""
         pos = position if position else 1
-        fallback_url = ArticleConstant.PICSUM_URL_TEMPLATE.format(pos)
+        fallback_url = BlogConstant.PICSUM_URL_TEMPLATE.format(pos)
         fallback_data = ImageData.from_url(fallback_url)
         oss_url = await self.oss_service.upload_image_data(fallback_data, "fallback")
         final_url = oss_url if oss_url else fallback_url

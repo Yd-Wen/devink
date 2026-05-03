@@ -332,7 +332,7 @@ const exportBlog = async (record: API.BlogVO) => {
 const removeBlog = async (record: API.BlogVO) => {
   try {
     await deleteBlog({ id: record.id })
-    message.success('删除成功')
+    message.success({content: '删除成功', duration: 3})
     loadData()
   } catch (error) {
     message.error((error as Error).message || '删除失败')

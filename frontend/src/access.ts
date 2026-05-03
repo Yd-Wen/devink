@@ -13,7 +13,7 @@ let firstFetchLoginUser = true
 /**
  * 全局权限校验
  */
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
     const loginUserStore = useLoginUserStore()
     let loginUser = loginUserStore.loginUser
 
@@ -29,9 +29,7 @@ router.beforeEach(async (to, from, next) => {
     if (toUrl.startsWith('/admin')) {
         if (!loginUser || loginUser.userRole !== USER_ROLE_ADMIN) {
             message.error('没有权限')
-            next(`/user/login?redirect=${to.fullPath}`)  // 普通用户访问 /admin 路由页面时拦截并跳转登录页面
-            return
+            return `/user/login?redirect=${to.fullPath}`  // 普通用户访问 /admin 路由页面时拦截并跳转登录页面
         }
     }
-    next()
 })

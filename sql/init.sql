@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS user
     userAvatar          varchar(1024)                               null comment '用户头像',
     userDescription     varchar(512)                                null comment '用户简介',
     userRole            varchar(256)    default 'user'              not null comment '用户角色：user/admin',
+    quota               int             default 5                    not null comment '剩余配额',
     editTime            datetime        default CURRENT_TIMESTAMP   not null comment '编辑时间',
     createTime          datetime        default CURRENT_TIMESTAMP   not null comment '创建时间',
     updateTime          datetime        default CURRENT_TIMESTAMP   not null on update CURRENT_TIMESTAMP comment '更新时间',
@@ -25,10 +26,10 @@ CREATE TABLE IF NOT EXISTS user
 ) comment '用户' collate = utf8mb4_unicode_ci;
 
 -- 初始化测试数据（密码是 12345678，MD5 加密 + 盐值 ）
-INSERT INTO user (id, userAccount, userPassword, userName, userAvatar, userDescription, userRole) VALUES
-(1, 'admin', '10670d38ec32fa8102be6a37f8cb52bf', '管理员', 'https://www.codefather.cn/logo.png', '系统管理员', 'admin'),
-(2, 'user', '10670d38ec32fa8102be6a37f8cb52bf', '普通用户', 'https://www.codefather.cn/logo.png', '我是一个普通用户', 'user'),
-(3, 'test', '10670d38ec32fa8102be6a37f8cb52bf', '测试账号', 'https://www.codefather.cn/logo.png', '这是一个测试账号', 'user');
+INSERT INTO user (id, userAccount, userPassword, userName, userAvatar, userDescription, userRole, quota) VALUES
+(1, 'admin', '10670d38ec32fa8102be6a37f8cb52bf', '管理员', 'https://www.codefather.cn/logo.png', '系统管理员', 'admin', 999),
+(2, 'user', '10670d38ec32fa8102be6a37f8cb52bf', '普通用户', 'https://www.codefather.cn/logo.png', '我是一个普通用户', 'user', 5),
+(3, 'test', '10670d38ec32fa8102be6a37f8cb52bf', '测试账号', 'https://www.codefather.cn/logo.png', '这是一个测试账号', 'user', 5);
 
 -- 文章表
 create table if not exists blog

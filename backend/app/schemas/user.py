@@ -77,15 +77,16 @@ Loginuservo 比 uservo 多了update_time 字段，用于展示登录用户自己
 """
 class LoginUserVO(BaseModel):
     """登录用户视图对象"""
-    
+
     id: int
     user_account: str = Field(..., alias="userAccount")
     user_name: Optional[str] = Field(None, alias="userName")
     user_avatar: Optional[str] = Field(None, alias="userAvatar")
     user_profile: Optional[str] = Field(None, alias="userProfile")
     user_role: str = Field(..., alias="userRole")
+    quota: Optional[int] = Field(None, alias="quota")
     create_time: str = Field(..., alias="createTime")
     update_time: str = Field(..., alias="updateTime")
-    
+
     class Config:
         populate_by_name = True

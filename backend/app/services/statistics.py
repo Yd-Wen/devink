@@ -35,10 +35,10 @@ class StatisticsService:
         week_start = self._get_week_start(now)
         month_start = self._get_month_start(now)
 
-        today_count = await self._count_articles_by_range(today_start, now)
-        week_count = await self._count_articles_by_range(week_start, now)
-        month_count = await self._count_articles_by_range(month_start, now)
-        total_count = await self._count_total_articles()
+        today_count = await self._count_blogs_by_range(today_start, now)
+        week_count = await self._count_blogs_by_range(week_start, now)
+        month_count = await self._count_blogs_by_range(month_start, now)
+        total_count = await self._count_total_blogs()
         success_rate = await self._calculate_success_rate(total_count)
         avg_duration_ms = await self._calculate_avg_duration()
         active_user_count = await self._count_active_users(week_start, now)
@@ -60,11 +60,11 @@ class StatisticsService:
         await self._set_cached_statistics(stats)
         return stats
 
-    async def _count_articles_by_range(self, start: datetime, end: datetime) -> int:
+    async def _count_blogs_by_range(self, start: datetime, end: datetime) -> int:
         value = await self.db.fetch_val(
             query="""
                 SELECT COUNT(1)
-                FROM article
+                FROM blog
                 WHERE isDelete = 0
                   AND createTime >= :startTime
                   AND createTime <= :endTime
@@ -73,9 +73,9 @@ class StatisticsService:
         )
         return int(value or 0)
 
-    async def _count_total_articles(self) -> int:
+    async def _count_total_blogs(self) -> int:
         value = await self.db.fetch_val(
-            query="SELECT COUNT(1) FROM article WHERE isDelete = 0",
+            query="SELECT COUNT(1) FROM blog WHERE isDelete = 0",
         )
         return int(value or 0)
 
@@ -85,7 +85,7 @@ class StatisticsService:
         success_count = await self.db.fetch_val(
             query="""
                 SELECT COUNT(1)
-                FROM article
+                FROM blog
                 WHERE isDelete = 0
                   AND status = :status
             """,
@@ -97,7 +97,7 @@ class StatisticsService:
         value = await self.db.fetch_val(
             query="""
                 SELECT AVG(TIMESTAMPDIFF(MICROSECOND, createTime, completedTime) / 1000)
-                FROM article
+                FROM blog
                 WHERE isDelete = 0
                   AND status = :status
                   AND completedTime IS NOT NULL
@@ -112,7 +112,7 @@ class StatisticsService:
         value = await self.db.fetch_val(
             query="""
                 SELECT COUNT(DISTINCT userId)
-                FROM article
+                FROM blog
                 WHERE isDelete = 0
                   AND createTime >= :startTime
                   AND createTime <= :endTime

@@ -52,7 +52,9 @@ class ImageIconifyService(ImageSearchService):
             return None
     
     def get_method(self) -> ImageMethodEnum:
+        """获取配图方式"""
         return ImageMethodEnum.ICONIFY
     
     def get_fallback_image(self, position: int) -> str:
+        """获取降级图片"""
         return BlogConstant.PICSUM_URL_TEMPLATE.format(position)

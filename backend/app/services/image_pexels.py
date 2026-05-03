@@ -34,6 +34,14 @@ class ImagePexelsService:
             logger.error(f"Pexels API 调用异常: {e}")
             return None
     
+    def get_method(self) -> ImageMethodEnum:
+        """获取配图方式"""
+        return ImageMethodEnum.PEXELS
+
+    def get_fallback_image(self, position: int) -> str:
+        """获取降级图片"""
+        return BlogConstant.PICSUM_URL_TEMPLATE.format(position)
+    
     def _build_search_url(self, keywords: str) -> str:
         """构建搜索 URL"""
         return (

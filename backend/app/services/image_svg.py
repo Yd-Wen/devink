@@ -24,7 +24,7 @@ class ImageSvgService(ImageSearchService):
         )
         self.model = settings.dashscope_model
     
-    async def get_image_data(self, request: ImageRequest) -> Optional[ImageData]:
+    async def search_image(self, request: ImageRequest) -> Optional[ImageData]:
         requirement = request.get_effective_param(True)
         return await self.generate_svg_diagram_data(requirement)
     
@@ -59,7 +59,9 @@ class ImageSvgService(ImageSearchService):
             return None
     
     def get_method(self) -> ImageMethodEnum:
+        """获取配图方式"""
         return ImageMethodEnum.SVG
     
     def get_fallback_image(self, position: int) -> str:
+        """获取降级图片"""
         return BlogConstant.PICSUM_URL_TEMPLATE.format(position)

@@ -62,7 +62,9 @@ class ImageEmojiService(ImageSearchService):
             return None
     
     def get_method(self) -> ImageMethodEnum:
-        return ImageMethodEnum.EMOJI_PACK
+        """获取配图方式"""
+        return ImageMethodEnum.EMOJI
     
     def get_fallback_image(self, position: int) -> str:
+        """获取降级图片"""
         return BlogConstant.PICSUM_URL_TEMPLATE.format(position)
