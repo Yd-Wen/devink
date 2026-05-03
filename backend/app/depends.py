@@ -9,7 +9,7 @@ from app.schemas.user import LoginUserVO
 from app.utils.session import get_session
 
 
-async def get_session_id(session_id: Optional[str] = Cookie(None, alias="SESSION")) -> Optional[str]:
+async def get_session_id(session_id: Optional[str] = Cookie(None, alias="SESSION_ID")) -> Optional[str]:
     """从 Cookie 中获取 Session ID"""
     return session_id
 
@@ -18,13 +18,18 @@ async def get_current_user(
     session_id: Optional[str] = Depends(get_session_id)  # 依赖注入,获取session id
 ) -> Optional[LoginUserVO]:
     """获取当前登录用户（可选）"""
+    return await get_user_by_session(session_id)
+
+
+async def get_user_by_session(session_id: Optional[str]) -> Optional[LoginUserVO]:
+    """根据session_id获取用户"""
     if not session_id:
         return None
-    
+
     session_data = await get_session(session_id)
     if not session_data or "user" not in session_data:
         return None
-    
+
     user_data = session_data["user"]
     return LoginUserVO(**user_data)
 

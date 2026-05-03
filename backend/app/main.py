@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.config import settings
 from app.database import database
@@ -75,6 +75,12 @@ app.add_middleware(
 @app.exception_handler(BusinessException)
 async def business_exception_handler(request: Request, exc: BusinessException):
     """业务异常处理"""
+    # 检查是否是 SSE 请求（SSE 请求期望 text/event-stream 而不是 JSON）
+    if request.url.path.startswith("/api/blog/progress/"):
+        return StreamingResponse(
+            f'data: {{"type":"ERROR","message":"{exc.message}"}}\n\n',
+            media_type="text/event-stream"
+        )
     return JSONResponse(
         status_code=200,
         content={
@@ -89,6 +95,12 @@ async def business_exception_handler(request: Request, exc: BusinessException):
 async def global_exception_handler(request: Request, exc: Exception):
     """全局异常处理"""
     print(f"未处理的异常: {exc}")
+    # 检查是否是 SSE 请求
+    if request.url.path.startswith("/api/blog/progress/"):
+        return StreamingResponse(
+            f'data: {{"type":"ERROR","message":"系统内部异常: {str(exc)}"}}\n\n',
+            media_type="text/event-stream"
+        )
     return JSONResponse(
         status_code=200,
         content={

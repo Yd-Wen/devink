@@ -33,7 +33,7 @@ class UserAddRequest(BaseModel):
     user_password: str = Field(..., alias="userPassword", description="密码")
     user_name: Optional[str] = Field(None, alias="userName", description="用户昵称")
     user_avatar: Optional[str] = Field(None, alias="userAvatar", description="用户头像")
-    user_profile: Optional[str] = Field(None, alias="userProfile", description="用户简介")
+    user_description: Optional[str] = Field(None, alias="userDescription", description="用户简介")
     user_role: str = Field(default="user", alias="userRole", description="用户角色")
 
 
@@ -43,7 +43,7 @@ class UserUpdateRequest(BaseModel):
     id: int = Field(..., description="用户 ID")
     user_name: Optional[str] = Field(None, alias="userName", description="用户昵称")
     user_avatar: Optional[str] = Field(None, alias="userAvatar", description="用户头像")
-    user_profile: Optional[str] = Field(None, alias="userProfile", description="用户简介")
+    user_description: Optional[str] = Field(None, alias="userDescription", description="用户简介")
     user_role: Optional[str] = Field(None, alias="userRole", description="用户角色")
 
 
@@ -53,7 +53,7 @@ class UserQueryRequest(PageRequest):
     id: Optional[int] = Field(None, description="用户 ID")
     user_account: Optional[str] = Field(None, alias="userAccount", description="账号")
     user_name: Optional[str] = Field(None, alias="userName", description="用户昵称")
-    user_profile: Optional[str] = Field(None, alias="userProfile", description="用户简介")
+    user_description: Optional[str] = Field(None, alias="userDescription", description="用户简介")
     user_role: Optional[str] = Field(None, alias="userRole", description="用户角色")
 
 
@@ -64,7 +64,7 @@ class UserVO(BaseModel):
     user_account: str = Field(..., alias="userAccount")
     user_name: Optional[str] = Field(None, alias="userName")
     user_avatar: Optional[str] = Field(None, alias="userAvatar")
-    user_profile: Optional[str] = Field(None, alias="userProfile")
+    user_description: Optional[str] = Field(None, alias="userDescription")
     user_role: str = Field(..., alias="userRole")
     create_time: str = Field(..., alias="createTime")
     
@@ -82,7 +82,7 @@ class LoginUserVO(BaseModel):
     user_account: str = Field(..., alias="userAccount")
     user_name: Optional[str] = Field(None, alias="userName")
     user_avatar: Optional[str] = Field(None, alias="userAvatar")
-    user_profile: Optional[str] = Field(None, alias="userProfile")
+    user_description: Optional[str] = Field(None, alias="userDescription")
     user_role: str = Field(..., alias="userRole")
     quota: Optional[int] = Field(None, alias="quota")
     create_time: str = Field(..., alias="createTime")

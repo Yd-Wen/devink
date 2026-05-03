@@ -1,7 +1,7 @@
 """博客路由"""
 
 import asyncio
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query, Request
 from databases import Database
 
 from app.database import get_db
@@ -19,7 +19,7 @@ from app.services.blog import BlogService
 from app.services.blog_async import blog_async_service
 from app.services.agent_log import AgentLogService
 from app.schemas.statistics import AgentExecutionStatsVO
-from app.depends import require_login
+from app.depends import require_login, get_current_user
 from app.managers.sse import sse_emitter_manager
 from app.exceptions import ErrorCode, throw_if
 
@@ -66,20 +66,29 @@ async def create_blog(
 @router.get("/progress/{task_id}")
 async def get_progress(
     task_id: str,
+    request: Request,
     db: Database = Depends(get_db),
-    current_user: LoginUserVO = Depends(require_login)
+    session_id: str = Query(None),  # 从query参数读取
 ):
     """SSE 进度推送"""
-    throw_if(
-        not task_id or not task_id.strip(),
-        ErrorCode.PARAMS_ERROR,
-        "任务ID不能为空"
-    )
-    
-    # 校验权限（内部会检查任务是否存在以及用户是否有权限访问）
+    # 优先从query参数读取session_id，否则从cookie读取
+    if not session_id:
+        session_id = request.cookies.get("SESSION_ID")
+
+    # 手动验证登录
+    if not session_id:
+        from app.exceptions import BusinessException, ErrorCode
+        raise BusinessException(ErrorCode.NOT_LOGIN_ERROR, "未登录")
+
+    current_user = await get_current_user(session_id)
+    if not current_user:
+        from app.exceptions import BusinessException, ErrorCode
+        raise BusinessException(ErrorCode.NOT_LOGIN_ERROR, "未登录")
+
+    # 校验权限
     service = BlogService(db)
     await service.get_blog_detail(task_id, current_user)
-    
+
     # 创建 SSE Emitter
     return sse_emitter_manager.create_emitter(task_id)
 

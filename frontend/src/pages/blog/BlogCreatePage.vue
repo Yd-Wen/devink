@@ -764,11 +764,11 @@ const handleSSEMessage = (msg: SSEMessage) => {
   console.log('SSE消息:', msg)
 
   switch (msg.type) {
-    case 'AGENT1_COMPLETE':
+    case 'TITLE_AGENT_COMPLETE':
       // 智能体1完成，进入标题生成阶段（显示加载）
       currentPhase.value = 'TITLE_GENERATING'
       currentStep.value = 1
-      addLog('智能体1：标题方案生成完成', 'success')
+      addLog('标题方案生成完成', 'success')
       break
 
     case 'TITLES_GENERATED':
@@ -779,7 +779,7 @@ const handleSSEMessage = (msg: SSEMessage) => {
       addLog(`生成了 ${msg.titleOptions?.length || 0} 个标题方案`, 'success')
       break
 
-    case 'AGENT2_STREAMING':
+    case 'OUTLINE_AGENT_STREAMING':
       // 大纲流式输出（显示生成中状态）
       currentPhase.value = 'OUTLINE_GENERATING'
       isOutlineStreaming.value = true
@@ -797,12 +797,12 @@ const handleSSEMessage = (msg: SSEMessage) => {
       // 保持在步骤1（规划大纲），用户编辑大纲时仍处于此阶段
       break
 
-    case 'AGENT2_COMPLETE':
+    case 'OUTLINE_AGENT_COMPLETE':
       // 大纲完成（内部处理，已在 OUTLINE_GENERATED 中切换阶段）
       // 不改变 currentStep，保持在步骤1，等用户确认大纲后才进入步骤2
       break
 
-    case 'AGENT3_STREAMING':
+    case 'CONTENT_AGENT_STREAMING':
       // 正文流式输出，进入步骤2（撰写正文）
       currentPhase.value = 'CONTENT_GENERATING'
       currentStep.value = 2
@@ -811,28 +811,30 @@ const handleSSEMessage = (msg: SSEMessage) => {
       scrollToBottom()
       break
 
-    case 'AGENT3_COMPLETE':
+    case 'CONTENT_AGENT_COMPLETE':
       // 正文完成，进入配图分析步骤
       isStreaming.value = false
       currentStep.value = 3
       addLog('正文生成完成', 'success')
       break
 
-    case 'AGENT4_COMPLETE':
+    case 'IMAGE_REQ_AGENT_COMPLETE':
       // 配图分析完成，进入配图生成步骤
       currentStep.value = 4
       totalImages.value = msg.imageRequirements?.length || 5
+      imageProgress.value = 1  // 显示配图进度 UI
       addLog(`配图需求分析完成，共 ${totalImages.value} 张`, 'success')
       break
 
     case 'IMAGE_COMPLETE':
-      // 单张配图完成
+      // 单张配图完成，进入生成配图步骤
+      currentStep.value = 5
       imageCount.value++
       imageProgress.value = Math.round((imageCount.value / totalImages.value) * 100)
       addLog(`配图生成中 ${imageCount.value}/${totalImages.value}`, 'info')
       break
 
-    case 'AGENT5_COMPLETE':
+    case 'IMAGE_RES_AGENT_COMPLETE':
       // 所有配图完成，进入图文合成步骤
       currentStep.value = 5
       blog.value.images = msg.images

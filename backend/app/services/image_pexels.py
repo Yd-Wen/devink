@@ -12,7 +12,7 @@ from app.services.image_search import ImageSearchService
 logger = logging.getLogger(__name__)
 
 
-class ImagePexelsService:
+class ImagePexelsService(ImageSearchService):
     """Pexels 图片检索服务"""
     
     def __init__(self):

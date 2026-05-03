@@ -75,6 +75,29 @@ class ImageStrategy:
             logger.error(f"获取图片并上传异常, method={method}, error={e}")
             return await self._handle_fallback_with_upload(request.position)
     
+    def _resolve_method(self, image_source: str) -> ImageMethodEnum:
+        """解析图片来源，处理未知值"""
+        try:
+            return ImageMethodEnum(image_source)
+        except ValueError:
+            logger.warning(
+                f"未知的图片来源: {image_source}, "
+                f"默认使用 {ImageMethodEnum.get_default_search_method().value}"
+            )
+            return ImageMethodEnum.get_default_search_method()
+
+    def _get_folder_for_method(self, method: ImageMethodEnum) -> str:
+        """获取方法对应的 OSS 文件夹"""
+        folder_map = {
+            ImageMethodEnum.PEXELS: "pexels",
+            ImageMethodEnum.MERMAID: "mermaid",
+            ImageMethodEnum.ICONIFY: "iconify",
+            ImageMethodEnum.EMOJI: "emoji",
+            ImageMethodEnum.SVG: "svg",
+            ImageMethodEnum.PICSUM: "picsum",
+        }
+        return folder_map.get(method, "unknown")
+
     async def _handle_fallback_with_upload(self, position: Optional[int]) -> ImageResult:
         """处理降级逻辑（降级图片也上传到 OSS）"""
         pos = position if position else 1
@@ -83,3 +106,15 @@ class ImageStrategy:
         oss_url = await self.oss_service.upload_image_data(fallback_data, "fallback")
         final_url = oss_url if oss_url else fallback_url
         return ImageResult(final_url, ImageMethodEnum.get_fallback_method())
+    
+    def _get_fallback_image(self, position: int) -> str:
+        """获取降级图片"""
+        # 优先使用已注册服务的降级方案
+        default_service = self.service_map.get(ImageMethodEnum.get_default_search_method())
+        if default_service:
+            return default_service.get_fallback_image(position)
+        return BlogConstant.PICSUM_URL_TEMPLATE.format(position)
+    
+    def get_registered_methods(self) -> List[ImageMethodEnum]:
+        """获取所有已注册的图片服务类型"""
+        return list(self.service_map.keys())

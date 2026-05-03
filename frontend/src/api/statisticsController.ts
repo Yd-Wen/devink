@@ -6,7 +6,7 @@ import request from '@/request'
 export async function getStatistics(
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseStatisticsVO>('/api/statistics/overview', {
+    return request<API.BaseResponseStatisticsVO>('/statistics/overview', {
         method: 'GET',
         ...(options || {}),
     })

@@ -221,13 +221,13 @@ class BlogAsyncService:
             data["outline"] = [s.model_dump() for s in state.outline.sections] if state.outline else []
         elif message == SseMessageTypeEnum.CONTENT_AGENT_COMPLETE.value:
             data["type"] = SseMessageTypeEnum.CONTENT_AGENT_COMPLETE.value
-        elif message == SseMessageTypeEnum.IMG_REQ_AGENT_COMPLETE.value:
-            data["type"] = SseMessageTypeEnum.IMG_REQ_AGENT_COMPLETE.value
+        elif message == SseMessageTypeEnum.IMAGE_REQ_AGENT_COMPLETE.value:
+            data["type"] = SseMessageTypeEnum.IMAGE_REQ_AGENT_COMPLETE.value
             data["imageRequirements"] = [
                 req.model_dump(by_alias=True) for req in state.image_requirements
             ] if state.image_requirements else []
-        elif message == SseMessageTypeEnum.IMG_RES_AGENT_COMPLETE.value:
-            data["type"] = SseMessageTypeEnum.IMG_RES_AGENT_COMPLETE.value
+        elif message == SseMessageTypeEnum.IMAGE_RES_AGENT_COMPLETE.value:
+            data["type"] = SseMessageTypeEnum.IMAGE_RES_AGENT_COMPLETE.value
             data["images"] = [
                 img.model_dump(by_alias=True) for img in state.images
             ] if state.images else []

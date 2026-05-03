@@ -1,5 +1,6 @@
 """文章智能体编排服务"""
 
+import asyncio
 import json
 import logging
 from contextlib import asynccontextmanager, contextmanager
@@ -122,7 +123,7 @@ class BlogAgentService:
             )
 
         prompt = (
-            PromptConstant.OUTLINE_AGENT_OUTLINE_PROMPT
+            PromptConstant.OUTLINE_AGENT_PROMPT
             .replace("{mainTitle}", state.title.main_title)
             .replace("{subTitle}", state.title.sub_title)
             .replace("{descriptionSection}", description_section)
@@ -159,7 +160,7 @@ class BlogAgentService:
             ensure_ascii=False
         )
         prompt = (
-            PromptConstant.CONTENT_AGENT_CONTENT_PROMPT
+            PromptConstant.CONTENT_AGENT_PROMPT
             .replace("{mainTitle}", state.title.main_title)
             .replace("{subTitle}", state.title.sub_title)
             .replace("{outline}", outline_text)
@@ -210,7 +211,7 @@ class BlogAgentService:
         ) as log_data:
             content = await self._completions(prompt)
             img_req_agent_data = self._parse_json_response(content, "配图需求")
-            img_req_agent_result = Agent4Result(**img_req_agent_data)
+            img_req_agent_result = ImgReqAgentResult(**img_req_agent_data)
 
             # 更新正文为包含占位符的版本
             state.content = self._normalize_placeholder_syntax(img_req_agent_result.content_with_placeholders)
@@ -270,6 +271,7 @@ class BlogAgentService:
                     image_result.model_dump_json(by_alias=True)
                 )
                 stream_handler(image_complete_message)
+                await asyncio.sleep(0)  # 让出控制权确保消息及时发送
 
                 logger.info(
                     f"智能体5：配图获取并上传成功, position={requirement.position}, "
@@ -434,7 +436,7 @@ class BlogAgentService:
    - MERMAID: 适合流程图、架构图、时序图、关系图、甘特图等结构化图表
    - ICONIFY: 适合图标、符号、小型装饰性图标（如：箭头、勾选、星星、心形等）
    - EMOJI_PACK: 适合表情包、搞笑图片、轻松幽默的配图
-   - SVG_DIAGRAM: 适合概念示意图、思维导图样式、逻辑关系展示（不涉及精确数据）"""
+   - SVG: 适合概念示意图、思维导图样式、逻辑关系展示（不涉及精确数据）"""
 
     def _get_method_usage_description(self, method: ImageMethodEnum) -> str:
         """获取配图方式的使用说明"""

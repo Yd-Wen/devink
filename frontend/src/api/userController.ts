@@ -49,13 +49,13 @@ export async function getLoginUser(options?: { [key: string]: any }) {
     })
 }
 
-/** 此处后端没有提供注释 GET /user/get/vo */
+/** 此处后端没有提供注释 GET /user/get */
 export async function getUserVoById(
     // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
     params: API.getUserVOByIdParams,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponseUserVO>('/user/get/vo', {
+    return request<API.BaseResponseUserVO>('/user/get', {
         method: 'GET',
         params: {
             ...params,
@@ -64,12 +64,12 @@ export async function getUserVoById(
     })
 }
 
-/** 此处后端没有提供注释 POST /user/list/page/vo */
+/** 此处后端没有提供注释 POST /user/list/page */
 export async function listUserVoByPage(
     body: API.UserQueryRequest,
     options?: { [key: string]: any }
 ) {
-    return request<API.BaseResponsePageUserVO>('/user/list/page/vo', {
+    return request<API.BaseResponsePageUserVO>('/user/list/page', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

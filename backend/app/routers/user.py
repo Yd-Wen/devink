@@ -46,14 +46,14 @@ async def login(
     """用户登录"""
     service = UserService(db)
     user = await service.login(request)
-    
+
     # 生成 Session ID
     session_id = generate_session_id()
-    
+
     # 保存到 Redis
     await set_session(session_id, {"user": user.model_dump(by_alias=True)})
-    
-    # 设置 Cookie
+
+    # 设置 HttpOnly Cookie（后端验证用）
     response.set_cookie(
         key="SESSION",
         value=session_id,
@@ -61,7 +61,16 @@ async def login(
         httponly=True,
         samesite="lax"
     )
-    
+
+    # 同时设置非 HttpOnly Cookie（前端 JS 可读取，用于 SSE）
+    response.set_cookie(
+        key="SESSION_ID",
+        value=session_id,
+        max_age=settings.session_max_age,
+        httponly=False,  # 允许 JS 访问
+        samesite="lax"
+    )
+
     return BaseResponse.success(data=user, message="登录成功")
 
 

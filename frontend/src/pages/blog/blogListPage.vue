@@ -229,6 +229,7 @@ const loadData = async () => {
     })
     const pageData = res.data.data
     let records = pageData?.records || []
+    console.log(pageData)
 
     // 前端过滤（如果后端不支持）
     if (searchKeyword.value) {
@@ -252,7 +253,7 @@ const loadData = async () => {
     }
 
     dataSource.value = records
-    pagination.value.total = pageData?.totalRow || 0
+    pagination.value.total = pageData?.total || 0
   } catch (error: any) {
     message.error(error.message || '加载失败')
   } finally {
@@ -569,6 +570,7 @@ onMounted(() => {
       color: var(--color-text-muted);
       display: -webkit-box;
       -webkit-line-clamp: 1;
+      line-clamp: 1; 
       -webkit-box-orient: vertical;
       overflow: hidden;
     }

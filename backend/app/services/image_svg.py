@@ -24,11 +24,17 @@ class ImageSvgService(ImageSearchService):
         )
         self.model = settings.dashscope_model
     
-    async def search_image(self, request: ImageRequest) -> Optional[ImageData]:
-        requirement = request.get_effective_param(True)
-        return await self.generate_svg_diagram_data(requirement)
+    async def search_image(self, keywords: str) -> Optional[ImageData]:
+        requirement = keywords
+        return await self.generate_svg_data(requirement)
+
+    async def get_image_data(self, request: ImageRequest) -> Optional[ImageData]:
+        """覆盖基类方法，直接返回 ImageData"""
+        # 优先使用 prompt（Mermaid 代码），否则使用 keywords
+        mermaid_code = request.get_effective_param(True)
+        return await self.generate_diagram_data(mermaid_code)
     
-    async def generate_svg_diagram_data(self, requirement: str) -> Optional[ImageData]:
+    async def generate_svg_data(self, requirement: str) -> Optional[ImageData]:
         """生成 SVG 概念示意图数据"""
         try:
             prompt = PromptConstant.SVG_GENERATION_PROMPT.replace(

@@ -16,12 +16,34 @@ export interface SSEOptions {
 }
 
 /**
+ * 从 Cookie 中获取 session_id
+ */
+function getSessionIdFromCookie(): string {
+    const cookies = document.cookie.split(';')
+    for (const cookie of cookies) {
+        const [name, value] = cookie.trim().split('=')
+        if (name === 'SESSION_ID') {
+            return value || ''
+        }
+    }
+    return ''
+}
+
+/**
  * 建立 SSE 连接
  */
 export const connectSSE = (taskId: string, options: SSEOptions): EventSource => {
     const { onMessage, onError, onComplete } = options
 
-    const eventSource = new EventSource(`${API_BASE_URL}/blog/progress/${taskId}`)
+    // 从 Cookie 获取 session_id 并添加到 URL
+    const sessionId = getSessionIdFromCookie()
+    console.log('[SSE] sessionId from cookie:', sessionId)
+    const url = sessionId
+        ? `${API_BASE_URL}/blog/progress/${taskId}?session_id=${sessionId}`
+        : `${API_BASE_URL}/blog/progress/${taskId}`
+    console.log('[SSE] url:', url)
+
+    const eventSource = new EventSource(url)
 
     eventSource.onmessage = (event) => {
         try {

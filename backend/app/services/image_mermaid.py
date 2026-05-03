@@ -25,7 +25,13 @@ class ImageMermaidService(ImageSearchService):
         self.width = settings.mermaid_width
         self.timeout = settings.mermaid_timeout / 1000
     
-    async def search_image(self, request: ImageRequest) -> Optional[ImageData]:
+    async def search_image(self, keywords: str) -> Optional[ImageData]:
+        mermaid_code = keywords
+        return await self.generate_diagram_data(mermaid_code)
+
+    async def get_image_data(self, request: ImageRequest) -> Optional[ImageData]:
+        """覆盖基类方法，直接返回 ImageData"""
+        # 优先使用 prompt（Mermaid 代码），否则使用 keywords
         mermaid_code = request.get_effective_param(True)
         return await self.generate_diagram_data(mermaid_code)
     

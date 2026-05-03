@@ -69,9 +69,9 @@ class Settings(BaseSettings):
     emoji_pack_timeout: int = 10000
 
     # SVG 示意图配置
-    svg_diagram_default_width: int = 800
-    svg_diagram_default_height: int = 600
-    svg_diagram_folder: str = "svg-diagrams"
+    svg_default_width: int = 800
+    svg_default_height: int = 600
+    svg_folder: str = "svg-diagrams"
 
     # 多智能体并行编排配置（并发数和失败策略）
     agent_image_max_concurrency: int = 3

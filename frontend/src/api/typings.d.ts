@@ -219,7 +219,7 @@ declare namespace API {
         pageNumber?: number
         pageSize?: number
         totalPage?: number
-        totalRow?: number
+        total?: number
         optimizeCountQuery?: boolean
     }
 
