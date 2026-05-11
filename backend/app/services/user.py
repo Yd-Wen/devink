@@ -74,8 +74,8 @@ class UserService:
         
         # 插入用户
         query = """
-            INSERT INTO user (userAccount, userPassword, userName, userRole, quota)
-            VALUES (:userAccount, :userPassword, :userName, :userRole, :quota)
+            INSERT INTO user (userAccount, userPassword, userName, userAvatar, userRole, quota)
+            VALUES (:userAccount, :userPassword, :userName, :userAvatar, :userRole, :quota)
         """
         user_id = await self.db.execute(
             query=query,
@@ -83,6 +83,7 @@ class UserService:
                 "userAccount": request.user_account,
                 "userPassword": encrypted_password,
                 "userName": f"用户{request.user_account}",
+                "userAvatar": "https://oss.yindongwen.top/devink/avatar.png",
                 "userRole": UserConstant.DEFAULT_ROLE,
                 "quota": UserConstant.DEFAULT_QUOTA,
             }

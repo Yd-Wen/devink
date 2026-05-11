@@ -72,7 +72,7 @@ class ImageStrategy:
             else:
                 return await self._handle_fallback_with_upload(request.position)
         except Exception as e:
-            logger.error(f"获取图片并上传异常, method={method}, error={e}")
+            logger.error(f"获取图片并上传异常, method={method}, error={repr(e)}")
             return await self._handle_fallback_with_upload(request.position)
     
     def _resolve_method(self, image_source: str) -> ImageMethodEnum:
@@ -96,7 +96,7 @@ class ImageStrategy:
             ImageMethodEnum.SVG: "svg",
             ImageMethodEnum.PICSUM: "picsum",
         }
-        return folder_map.get(method, "unknown")
+        return "devink/" + (folder_map.get(method, "unknown"))
 
     async def _handle_fallback_with_upload(self, position: Optional[int]) -> ImageResult:
         """处理降级逻辑（降级图片也上传到 OSS）"""

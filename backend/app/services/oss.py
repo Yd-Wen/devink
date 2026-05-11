@@ -77,7 +77,7 @@ class OssService:
             # 返回访问 URL
             return f"{self.endpoint}/{file_name}"
         except Exception as e:
-            logger.error(f"上传图片到 OSS 失败: {e}")
+            logger.error(f"上传图片到 OSS 失败: {repr(e)}, image_url={image_url}")
             return image_url  # 降级：直接返回原始 URL
     
     async def upload_image_data(
@@ -139,7 +139,7 @@ class OssService:
             
             return cos_url
         except Exception as e:
-            logger.error(f"上传图片数据到 OSS 失败: {e}")
+            logger.error(f"上传图片数据到 OSS 失败: {repr(e)}, data_type={image_data.data_type}, url={image_data.url}")
             # 如果是 URL 类型，降级返回原始 URL
             if image_data.data_type == DataType.URL:
                 return image_data.url

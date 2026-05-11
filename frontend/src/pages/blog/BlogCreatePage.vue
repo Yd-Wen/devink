@@ -205,6 +205,13 @@
             <span v-if="isStreaming" class="typing-cursor">|</span>
           </div>
 
+          <!-- 分析配图需求中 -->
+          <div v-if="currentStep === 3 && !isStreaming" class="loading-stage">
+            <a-spin size="large" />
+            <h3>AI 正在分析配图需求...</h3>
+            <p>智能识别文章中需要配图的位置和类型</p>
+          </div>
+
           <!-- 配图进度 -->
           <div v-if="currentStep === 4 && imageProgress > 0" class="image-progress-box">
             <div class="progress-header">
@@ -213,6 +220,13 @@
             </div>
             <a-progress :percent="imageProgress" status="active" :stroke-color="{ from: '#f97316', to: '#e06200' }" />
             <p class="progress-hint">{{ imageCount }}/{{ totalImages }} 张图片已完成</p>
+          </div>
+
+          <!-- 图文合成中 -->
+          <div v-if="currentStep === 5 && !blog.fullContent" class="loading-stage">
+            <a-spin size="large" />
+            <h3>正在合成图文...</h3>
+            <p>将配图插入正文，完美呈现</p>
           </div>
 
           <!-- 加载占位 -->
@@ -800,10 +814,18 @@ const handleSSEMessage = (msg: SSEMessage) => {
       break
 
     case 'CONTENT_AGENT_COMPLETE':
-      // 正文完成，进入配图分析步骤
+      // 正文完成，保持内容生成阶段，等待配图分析开始
       isStreaming.value = false
       currentStep.value = 3
-      addLog('正文生成完成', 'success')
+      addLog('正文生成完成，正在分析配图需求...', 'success')
+      scrollToBottom()
+      break
+
+    case 'IMAGE_REQ_AGENT_START':
+      // 配图需求分析开始
+      currentStep.value = 3
+      addLog('AI 正在分析配图需求...', 'info')
+      scrollToBottom()
       break
 
     case 'IMAGE_REQ_AGENT_COMPLETE':
@@ -814,9 +836,16 @@ const handleSSEMessage = (msg: SSEMessage) => {
       addLog(`配图需求分析完成，共 ${totalImages.value} 张`, 'success')
       break
 
+    case 'IMAGE_RES_AGENT_START':
+      // 配图生成开始
+      currentStep.value = 4
+      imageCount.value = 0
+      imageProgress.value = 0
+      addLog('开始生成配图...', 'info')
+      break
+
     case 'IMAGE_COMPLETE':
-      // 单张配图完成，进入生成配图步骤
-      currentStep.value = 5
+      // 单张配图完成，只更新进度，不跳步
       imageCount.value++
       imageProgress.value = Math.round((imageCount.value / totalImages.value) * 100)
       addLog(`配图生成中 ${imageCount.value}/${totalImages.value}`, 'info')
@@ -826,7 +855,13 @@ const handleSSEMessage = (msg: SSEMessage) => {
       // 所有配图完成，进入图文合成步骤
       currentStep.value = 5
       blog.value.images = msg.images
-      addLog('所有配图生成完成', 'success')
+      addLog('所有配图生成完成，正在合成图文...', 'success')
+      break
+
+    case 'MERGE_START':
+      // 图文合成开始
+      currentStep.value = 5
+      addLog('正在合成图文...', 'info')
       break
 
     case 'MERGE_COMPLETE':

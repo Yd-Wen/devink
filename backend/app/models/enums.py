@@ -94,9 +94,12 @@ class SseMessageTypeEnum(str, Enum):
     OUTLINE_AGENT_COMPLETE = "OUTLINE_AGENT_COMPLETE"    # 大纲智能体完成
     CONTENT_AGENT_STREAMING = "CONTENT_AGENT_STREAMING"  # 正文智能体流式输出（正文）
     CONTENT_AGENT_COMPLETE = "CONTENT_AGENT_COMPLETE"    # 正文智能体完成
+    IMAGE_REQ_AGENT_START = "IMAGE_REQ_AGENT_START"      # 配图分析智能体开始
     IMAGE_REQ_AGENT_COMPLETE = "IMAGE_REQ_AGENT_COMPLETE"    # 配图分析智能体完成（配图需求）
+    IMAGE_RES_AGENT_START = "IMAGE_RES_AGENT_START"      # 配图生成智能体开始
     IMAGE_COMPLETE = "IMAGE_COMPLETE"      # 单张配图完成
     IMAGE_RES_AGENT_COMPLETE = "IMAGE_RES_AGENT_COMPLETE"    # 配图生成智能体完成（配图结果）
+    MERGE_START = "MERGE_START"            # 图文合成开始
     MERGE_COMPLETE = "MERGE_COMPLETE"      # 图文合成完成
     ALL_COMPLETE = "ALL_COMPLETE"          # 全部完成
     ERROR = "ERROR"                        # 错误

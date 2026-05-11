@@ -80,7 +80,7 @@
         <a-button
           type="primary"
           :loading="aiModifying"
-          :disabled="!modifySuggestion.trim()"
+          :disabled="!modifySuggestion.trim() || loading || aiModifying"
           @click="handleAiModify"
           class="ai-modify-btn"
         >
@@ -95,6 +95,7 @@
     <div class="actions">
       <a-button
         size="large"
+        :disabled="aiModifying || loading"
         @click="addSection"
         class="add-section-btn"
       >
@@ -108,7 +109,7 @@
         type="primary"
         size="large"
         :loading="loading"
-        :disabled="!canConfirm"
+        :disabled="!canConfirm || aiModifying"
         @click="handleConfirm"
         class="confirm-btn"
       >

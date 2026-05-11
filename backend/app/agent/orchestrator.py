@@ -68,13 +68,16 @@ class BlogAgentOrchestrator:
         stream_context.emit(SseMessageTypeEnum.CONTENT_AGENT_COMPLETE.value)
 
         logger.info("阶段3：开始分析配图需求, taskId=%s", state.task_id)
+        stream_context.emit(SseMessageTypeEnum.IMAGE_REQ_AGENT_START.value)
         await self.image_analyzer_agent.run(service, state)
         stream_context.emit(SseMessageTypeEnum.IMAGE_REQ_AGENT_COMPLETE.value)
 
         logger.info("阶段3：开始生成配图, taskId=%s", state.task_id)
+        stream_context.emit(SseMessageTypeEnum.IMAGE_RES_AGENT_START.value)
         await service.img_res_agent_generate_images(state, stream_context.emit)
         stream_context.emit(SseMessageTypeEnum.IMAGE_RES_AGENT_COMPLETE.value)
 
         logger.info("阶段3：开始图文合成, taskId=%s", state.task_id)
+        stream_context.emit(SseMessageTypeEnum.MERGE_START.value)
         self.merger_agent.run(service, state)
         stream_context.emit(SseMessageTypeEnum.MERGE_COMPLETE.value)

@@ -30,9 +30,9 @@ class ImageSvgService(ImageSearchService):
 
     async def get_image_data(self, request: ImageRequest) -> Optional[ImageData]:
         """覆盖基类方法，直接返回 ImageData"""
-        # 优先使用 prompt（Mermaid 代码），否则使用 keywords
-        mermaid_code = request.get_effective_param(True)
-        return await self.generate_diagram_data(mermaid_code)
+        # 优先使用 prompt（SVG 描述），否则使用 keywords
+        requirement = request.get_effective_param(True)
+        return await self.generate_svg_data(requirement)
     
     async def generate_svg_data(self, requirement: str) -> Optional[ImageData]:
         """生成 SVG 概念示意图数据"""
