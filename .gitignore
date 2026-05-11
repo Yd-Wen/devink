@@ -24,3 +24,4 @@ temp/
 
 # claude
 .claude/settings.local.json
+.claude/skills
