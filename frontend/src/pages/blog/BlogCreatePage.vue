@@ -876,8 +876,14 @@ const handleSSEMessage = (msg: SSEMessage) => {
       currentPhase.value = 'COMPLETED'
       currentStep.value = 6
       isCompleted.value = true
-      message.success('博客创作完成!')
+      if (msg.remainingQuota !== undefined) {
+        message.success(`博客创作完成！配额已扣减 1 次，剩余 ${msg.remainingQuota} 次`)
+      } else {
+        message.success('博客创作完成！')
+      }
       addLog('✨ 博客创作完成！', 'success')
+      // 刷新用户信息（更新配额显示）
+      loginUserStore.fetchLoginUser()
       break
 
     case 'ERROR':
@@ -987,11 +993,12 @@ const resetCreate = () => {
   }
 }
 
-// 组件挂载时检查路由参数
+// 组件挂载时检查路由参数并刷新用户信息（配额）
 onMounted(() => {
   if (route.query.topic) {
     topic.value = route.query.topic as string
   }
+  loginUserStore.fetchLoginUser()
 })
 
 // 组件卸载前关闭 SSE

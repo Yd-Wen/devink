@@ -78,7 +78,7 @@ class BlogService:
         style: Optional[str] = None,
         enabled_image_methods: Optional[List[str]] = None,
     ) -> str:
-        """在同一事务中完成配额扣减和任务创建"""
+        """检查配额并创建博客任务（创建时不扣减，完成后扣减）"""
         # 管理员直接创建，不扣配额
         if self._is_admin(login_user):
             return await self.create_blog_task(
@@ -88,40 +88,79 @@ class BlogService:
                 enabled_image_methods=enabled_image_methods,
             )
 
-        # 普通用户检查配额
-        async with self.db.transaction():
-            quota_row = await self.db.fetch_one(
-                query="""
-                    SELECT quota
-                    FROM user
-                    WHERE id = :userId AND isDelete = 0
-                    FOR UPDATE
-                """,
-                values={"userId": login_user.id},
-            )
-            throw_if_not(quota_row, ErrorCode.NOT_FOUND_ERROR, "用户不存在")
-            throw_if(quota_row["quota"] <= 0, ErrorCode.OPERATION_ERROR, "今日配额已用完，每天 0 点自动恢复")
+        # 普通用户检查配额是否足够
+        quota_row = await self.db.fetch_one(
+            query="""
+                SELECT quota
+                FROM user
+                WHERE id = :userId AND isDelete = 0
+            """,
+            values={"userId": login_user.id},
+        )
+        throw_if_not(quota_row, ErrorCode.NOT_FOUND_ERROR, "用户不存在")
+        throw_if(quota_row["quota"] <= 0, ErrorCode.OPERATION_ERROR, "今日配额已用完，每天 0 点自动恢复")
 
-            await self.db.execute(
-                query="""
-                    UPDATE user
-                    SET quota = quota - 1
-                    WHERE id = :userId
-                """,
-                values={"userId": login_user.id},
-            )
-
-            return await self.create_blog_task(
-                topic=topic,
-                login_user=login_user,
-                style=style,
-                enabled_image_methods=enabled_image_methods,
-            )
+        return await self.create_blog_task(
+            topic=topic,
+            login_user=login_user,
+            style=style,
+            enabled_image_methods=enabled_image_methods,
+        )
 
     async def get_by_task_id(self, task_id: str):
         """根据任务 ID 查询博客记录"""
         query = select(Blog).where(and_(Blog.task_id == task_id, Blog.is_delete == 0))
         return await self.db.fetch_one(query)
+
+    async def decrement_quota_on_completion(self, task_id: str) -> Optional[int]:
+        """博客创作完成后扣减对应用户的配额，返回扣减后的剩余配额"""
+        blog = await self.get_by_task_id(task_id)
+        if not blog:
+            logger.warning("博客记录不存在, taskId=%s, 无法扣减配额", task_id)
+            return None
+
+        user_id = blog["userId"]
+
+        # 查询用户角色，管理员不扣配额
+        user_row = await self.db.fetch_one(
+            query="""
+                SELECT userRole, quota
+                FROM user
+                WHERE id = :userId AND isDelete = 0
+            """,
+            values={"userId": user_id},
+        )
+        if not user_row:
+            logger.warning("用户不存在, userId=%s, 无法扣减配额", user_id)
+            return None
+
+        if user_row["userRole"] == UserConstant.ADMIN_ROLE:
+            return None
+
+        if user_row["quota"] <= 0:
+            logger.warning("用户配额不足, userId=%s, quota=%s", user_id, user_row["quota"])
+            return None
+
+        await self.db.execute(
+            query="""
+                UPDATE user
+                SET quota = quota - 1
+                WHERE id = :userId
+            """,
+            values={"userId": user_id},
+        )
+
+        # 查询扣减后的剩余配额
+        quota_row = await self.db.fetch_one(
+            query="SELECT quota FROM user WHERE id = :userId AND isDelete = 0",
+            values={"userId": user_id},
+        )
+        remaining_quota = quota_row["quota"] if quota_row else None
+        logger.info(
+            "博客创作完成, 已扣减配额, taskId=%s, userId=%s, remainingQuota=%s",
+            task_id, user_id, remaining_quota
+        )
+        return remaining_quota
 
     async def get_blog_detail(self, task_id: str, login_user: LoginUserVO) -> BlogVO:
         """获取博客详情"""

@@ -147,11 +147,16 @@ class BlogAsyncService:
             )
             await blog_service.save_blog_content(task_id, state)
             await blog_service.update_blog_status(task_id, BlogStatusEnum.COMPLETED)
+            remaining_quota = await blog_service.decrement_quota_on_completion(task_id)
+
+            all_complete_data: Dict[str, Any] = {"taskId": task_id}
+            if remaining_quota is not None:
+                all_complete_data["remainingQuota"] = remaining_quota
 
             self._send_sse_message(
                 task_id,
                 SseMessageTypeEnum.ALL_COMPLETE,
-                {"taskId": task_id}
+                all_complete_data
             )
             sse_emitter_manager.complete(task_id)
             logger.info("阶段3异步任务完成, taskId=%s", task_id)
