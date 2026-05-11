@@ -139,12 +139,12 @@ class UserService:
         """根据 ID 获取用户"""
         query = select(User).where(and_(User.id == user_id, User.is_delete == 0))
         user = await self.db.fetch_one(query)
-        
+
         if not user:
             return None
 
         user_dict = dict(user)
-        
+
         return UserVO(
             id=user_dict["id"],
             userAccount=user_dict["userAccount"],
@@ -152,8 +152,29 @@ class UserService:
             userAvatar=user_dict["userAvatar"],
             userDescription=user_dict["userDescription"],
             userRole=user_dict["userRole"],
-            quota=user_dict.get("quota"),
             createTime=user_dict["createTime"].isoformat()
+        )
+
+    async def get_login_user_by_id(self, user_id: int) -> Optional[LoginUserVO]:
+        """根据 ID 获取登录用户信息（包含配额）"""
+        query = select(User).where(and_(User.id == user_id, User.is_delete == 0))
+        user = await self.db.fetch_one(query)
+
+        if not user:
+            return None
+
+        user_dict = dict(user)
+
+        return LoginUserVO(
+            id=user_dict["id"],
+            userAccount=user_dict["userAccount"],
+            userName=user_dict["userName"],
+            userAvatar=user_dict["userAvatar"],
+            userDescription=user_dict["userDescription"],
+            userRole=user_dict["userRole"],
+            quota=user_dict.get("quota"),
+            createTime=user_dict["createTime"].isoformat(),
+            updateTime=user_dict["updateTime"].isoformat()
         )
     
     async def list_by_page(self, request: UserQueryRequest) -> Tuple[List[UserVO], int]:

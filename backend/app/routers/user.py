@@ -88,10 +88,13 @@ async def logout(
 
 @router.get("/get/login", response_model=BaseResponse[LoginUserVO])
 async def get_login_user(
-    current_user: LoginUserVO = Depends(require_login)  # 依赖注入,需要登录
+    current_user: LoginUserVO = Depends(require_login),
+    db: Database = Depends(get_db)
 ):
-    """获取当前登录用户"""
-    return BaseResponse.success(data=current_user)
+    """获取当前登录用户（从数据库实时查询）"""
+    service = UserService(db)
+    user = await service.get_login_user_by_id(current_user.id)
+    return BaseResponse.success(data=user)
 
 
 @router.get("/get", response_model=BaseResponse[UserVO])
