@@ -8,9 +8,9 @@
     <div class="outline-list" ref="outlineListRef">
       <div
         v-for="(section, index) in outlineSections"
-        :key="section.section"
+        :key="section.id"
         class="outline-section"
-        :data-section-id="section.section"
+        :data-section-id="section.id"
       >
         <div class="section-header">
           <span class="drag-handle" title="拖动排序">⋮⋮</span>
@@ -131,6 +131,7 @@ import { aiModifyOutline } from '@/api/blogController'
 import { useLoginUserStore } from '@/stores/loginUser'
 
 interface OutlineSection {
+  id: number
   section: number
   title: string
   points: string[]
@@ -154,9 +155,13 @@ const emit = defineEmits<Emits>()
 
 const loginUserStore = useLoginUserStore()
 
+// 稳定 ID 计数器，用于 Vue key
+let sectionIdCounter = 0
+
 // 转换 API 类型为内部类型
 const outlineSections = ref<OutlineSection[]>(
   props.outline.map((item, index) => ({
+    id: ++sectionIdCounter,
     section: item.section ?? index + 1,
     title: item.title ?? '',
     points: item.points ?? []
@@ -183,13 +188,9 @@ onMounted(() => {
         handle: '.drag-handle',
         onEnd: (evt: Sortable.SortableEvent) => {
           const { oldIndex, newIndex } = evt
-          if (oldIndex !== undefined && newIndex !== undefined) {
+          if (oldIndex !== undefined && newIndex !== undefined && oldIndex !== newIndex) {
             const item = outlineSections.value.splice(oldIndex, 1)[0]!
             outlineSections.value.splice(newIndex, 0, item)
-            // 更新 section 序号
-            outlineSections.value.forEach((sec, idx) => {
-              sec.section = idx + 1
-            })
           }
         }
       })
@@ -199,6 +200,7 @@ onMounted(() => {
 
 const addSection = () => {
   const newSection: OutlineSection = {
+    id: ++sectionIdCounter,
     section: outlineSections.value.length + 1,
     title: '',
     points: ['']
@@ -208,10 +210,6 @@ const addSection = () => {
 
 const deleteSection = (index: number) => {
   outlineSections.value.splice(index, 1)
-  // 更新 section 序号
-  outlineSections.value.forEach((sec, idx) => {
-    sec.section = idx + 1
-  })
 }
 
 const addPoint = (sectionIndex: number) => {
@@ -226,7 +224,14 @@ const deletePoint = (sectionIndex: number, pointIndex: number) => {
 }
 
 const handleConfirm = () => {
-  emit('confirm', outlineSections.value)
+  // 根据当前顺序重新生成 section 编号后传给后端
+  const finalOutline = outlineSections.value.map((sec, idx) => ({
+    id: sec.id,
+    section: idx + 1,
+    title: sec.title,
+    points: sec.points
+  }))
+  emit('confirm', finalOutline)
 }
 
 const handleAiModify = async () => {
@@ -244,6 +249,7 @@ const handleAiModify = async () => {
 
     if (res.data.data) {
       outlineSections.value = res.data.data.map((item, index) => ({
+        id: ++sectionIdCounter,
         section: item.section ?? index + 1,
         title: item.title ?? '',
         points: item.points ?? []
