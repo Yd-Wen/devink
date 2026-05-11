@@ -6,15 +6,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* 品牌色 - 绿色系 */
-  --color-primary: #22C55E;
-  --color-primary-light: #4ADE80;
-  --color-primary-dark: #16A34A;
+  /* 品牌色 - 橙色系 (Logo #e06200) */
+  --color-primary: #e06200;
+  --color-primary-light: #f97316;
+  --color-primary-dark: #c2410c;
   --color-secondary: #0F172A;
   --color-secondary-light: #334155;
 
   /* 功能色 */
-  --color-cta: #22C55E;
+  --color-cta: #e06200;
   --color-success: #22C55E;
   --color-warning: #EAB308;
   --color-error: #EF4444;
@@ -32,13 +32,13 @@
   --color-border-light: #F1F5F9;
 
   /* 渐变 */
-  --gradient-primary: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
-  --gradient-hero: linear-gradient(180deg, #DCFCE7 0%, #FFFFFF 100%);
-  --gradient-hero-dark: linear-gradient(180deg, #166534 0%, #14532D 100%);
+  --gradient-primary: linear-gradient(135deg, #e06200 0%, #c2410c 100%);
+  --gradient-hero: linear-gradient(180deg, #FFF7ED 0%, #FFFFFF 100%);
+  --gradient-hero-dark: linear-gradient(180deg, #9A3412 0%, #7C2D12 100%);
 
   /* 纯色背景 */
-  --bg-primary: #22C55E;
-  --bg-primary-hover: #16A34A;
+  --bg-primary: #e06200;
+  --bg-primary-hover: #c2410c;
   --bg-dark: #0F172A;
   --bg-dark-hover: #1E293B;
   --bg-success: #22C55E;
@@ -49,8 +49,8 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 8px 24px rgba(34, 197, 94, 0.15);
-  --shadow-green: 0 4px 14px rgba(34, 197, 94, 0.25);
+  --shadow-card-hover: 0 8px 24px rgba(224, 98, 0, 0.15);
+  --shadow-orange: 0 4px 14px rgba(224, 98, 0, 0.25);
 
   /* 圆角 */
   --radius-sm: 6px;
@@ -67,7 +67,7 @@
 
   /* 毛玻璃 */
   --glass-bg: rgba(255, 255, 255, 0.9);
-  --glass-bg-green: rgba(220, 252, 231, 0.8);
+  --glass-bg-orange: rgba(255, 247, 237, 0.8);
   --glass-blur: blur(12px);
 
   /* 响应式断点（用于 JS 读取） */

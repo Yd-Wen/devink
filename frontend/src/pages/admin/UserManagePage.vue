@@ -267,7 +267,7 @@ onMounted(() => {
 
     &:focus {
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+      box-shadow: 0 0 0 2px rgba(224, 98, 0, 0.1);
     }
   }
 
@@ -277,7 +277,7 @@ onMounted(() => {
     background: var(--gradient-primary) !important;
     border: none !important;
     color: white !important;
-    box-shadow: var(--shadow-green) !important;
+    box-shadow: var(--shadow-orange) !important;
     transition: opacity var(--transition-normal) !important;
 
     &:hover,
@@ -286,7 +286,7 @@ onMounted(() => {
       background: var(--gradient-primary) !important;
       border: none !important;
       color: white !important;
-      box-shadow: var(--shadow-green) !important;
+      box-shadow: var(--shadow-orange) !important;
       opacity: 0.92;
     }
 
@@ -311,7 +311,7 @@ onMounted(() => {
     }
 
     :deep(.ant-table-tbody > tr:hover > td) {
-      background: rgba(34, 197, 94, 0.02);
+      background: rgba(224, 98, 0, 0.02);
     }
 
     :deep(.ant-table-pagination) {

@@ -220,7 +220,7 @@ const doLogout = async () => {
 
 .nav-item.active {
   color: var(--color-primary-dark);
-  background: rgba(34, 197, 94, 0.1);
+  background: rgba(224, 98, 0, 0.1);
 }
 
 .nav-icon {
@@ -276,14 +276,14 @@ const doLogout = async () => {
   color: white;
   background: var(--gradient-primary);
   border: none;
-  box-shadow: var(--shadow-green);
+  box-shadow: var(--shadow-orange);
   transition: all var(--transition-normal);
   text-decoration: none;
 }
 
 .login-btn:hover {
   color: white;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+  box-shadow: 0 6px 20px rgba(224, 98, 0, 0.35);
 }
 
 .dropdown-menu {

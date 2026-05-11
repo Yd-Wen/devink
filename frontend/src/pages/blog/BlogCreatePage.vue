@@ -211,7 +211,7 @@
               <PictureOutlined />
               <span>正在生成配图</span>
             </div>
-            <a-progress :percent="imageProgress" status="active" :stroke-color="{ from: '#22C55E', to: '#16A34A' }" />
+            <a-progress :percent="imageProgress" status="active" :stroke-color="{ from: '#f97316', to: '#e06200' }" />
             <p class="progress-hint">{{ imageCount }}/{{ totalImages }} 张图片已完成</p>
           </div>
 
@@ -261,7 +261,7 @@
             <a-progress
               :percent="(quota / 5) * 100"
               :show-info="false"
-              :stroke-color="quota <= 1 ? '#ff4d4f' : '#22C55E'"
+              :stroke-color="quota <= 1 ? '#ff4d4f' : '#e06200'"
               size="small"
               class="quota-progress"
             />
@@ -291,27 +291,27 @@
         <div v-if="currentPhase === 'INPUT'" class="panel-section">
           <h4 class="panel-title">
             <StarOutlined />
-            爆款技巧
+            创作技巧
           </h4>
           <div class="tips-list">
             <div class="tip-item">
               <div class="tip-icon">1</div>
               <div class="tip-content">
-                <div class="tip-title">抓住痛点</div>
-                <div class="tip-desc">直击用户最关心的问题</div>
+                <div class="tip-title">抓痛点抓需求</div>
+                <div class="tip-desc">从难题、热点切入解决具体问题</div>
               </div>
             </div>
             <div class="tip-item">
               <div class="tip-icon">2</div>
               <div class="tip-content">
-                <div class="tip-title">制造悬念</div>
-                <div class="tip-desc">让读者产生好奇心</div>
+                <div class="tip-title">立意小而精</div>
+                <div class="tip-desc">深挖一点胜过泛谈一片</div>
               </div>
             </div>
             <div class="tip-item">
               <div class="tip-icon">3</div>
               <div class="tip-content">
-                <div class="tip-title">数字吸引</div>
+                <div class="tip-title">数字说明</div>
                 <div class="tip-desc">使用具体数据增加说服力</div>
               </div>
             </div>
@@ -383,7 +383,7 @@
             <div class="tip-item">
               <div class="tip-icon">💡</div>
               <div class="tip-content">
-                <div class="tip-desc">AI 正在分析您的选题，生成多个吸引眼球的标题方案</div>
+                <div class="tip-desc">AI 正在分析您的选题，生成多个标题方案</div>
               </div>
             </div>
           </div>
@@ -488,18 +488,6 @@
             </div>
           </div>
         </div>
-
-        <!-- 底部帮助链接 -->
-        <div class="panel-footer">
-          <a class="help-link">
-            <QuestionCircleOutlined />
-            使用帮助
-          </a>
-          <a class="help-link">
-            <MessageOutlined />
-            反馈建议
-          </a>
-        </div>
       </aside>
     </div>
 
@@ -568,12 +556,12 @@ const agentSteps = [
 
 // 示例选题
 const exampleTopics = [
-  '2026年AI如何改变职场',
+  '如何用 AI 高效提升学习效率',
+  'AI 时代哪些岗位容易被替代',
+  'AI 写作普及后原创还有意义吗',
+  '人工智能时代如何保持不可替代',
+  '自律和内耗该如何平衡相处',
   '程序员如何提升竞争力',
-  '远程办公的利与弊',
-  '如何培养深度思考',
-  '新能源汽车趋势',
-  '健康饮食指南',
 ]
 
 // 阶段状态
@@ -1066,7 +1054,7 @@ onBeforeUnmount(() => {
   }
 
   .active & {
-    background: rgba(34, 197, 94, 0.1);
+    background: rgba(224, 98, 0, 0.1);
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
   }
@@ -1182,7 +1170,7 @@ onBeforeUnmount(() => {
 
   &:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    box-shadow: 0 0 0 3px rgba(224, 98, 0, 0.1);
   }
 }
 
@@ -1194,7 +1182,7 @@ onBeforeUnmount(() => {
   background: var(--gradient-primary) !important;
   border: none !important;
   color: white !important;
-  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(224, 98, 0, 0.3) !important;
 
   &:hover,
   &:focus,
@@ -1202,7 +1190,7 @@ onBeforeUnmount(() => {
     background: var(--gradient-primary) !important;
     color: white !important;
     border: none !important;
-    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3) !important;
+    box-shadow: 0 4px 14px rgba(224, 98, 0, 0.3) !important;
     opacity: 0.92;
   }
 
@@ -1254,12 +1242,12 @@ onBeforeUnmount(() => {
 
 .style-group :deep(.ant-radio-wrapper:hover) {
   border-color: var(--color-primary);
-  background: rgba(34, 197, 94, 0.04);
+  background: rgba(224, 98, 0, 0.04);
 }
 
 .style-group :deep(.ant-radio-wrapper-checked) {
   border-color: var(--color-primary);
-  background: rgba(34, 197, 94, 0.08);
+  background: rgba(224, 98, 0, 0.08);
 }
 
 /* 配图方式选择 */
@@ -1305,12 +1293,12 @@ onBeforeUnmount(() => {
 
 .methods-group :deep(.ant-checkbox-wrapper:hover) {
   border-color: var(--color-primary);
-  background: rgba(34, 197, 94, 0.04);
+  background: rgba(224, 98, 0, 0.04);
 }
 
 .methods-group :deep(.ant-checkbox-wrapper-checked) {
   border-color: var(--color-primary);
-  background: rgba(34, 197, 94, 0.08);
+  background: rgba(224, 98, 0, 0.08);
 }
 
 .methods-group :deep(.ant-checkbox-wrapper-disabled) {
@@ -1330,11 +1318,11 @@ onBeforeUnmount(() => {
   gap: 6px;
   margin-top: 12px;
   padding: 10px 14px;
-  background: rgba(34, 197, 94, 0.08);
+  background: rgba(224, 98, 0, 0.08);
   border-radius: var(--radius-md);
   font-size: 12px;
   color: var(--color-primary-dark);
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(224, 98, 0, 0.2);
 
   .anticon {
     color: var(--color-primary);
@@ -1571,7 +1559,7 @@ onBeforeUnmount(() => {
 
 /* 配额信息样式 */
 .quota-section {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(224, 98, 0, 0.05) 0%, rgba(224, 98, 0, 0.02) 100%);
   border-radius: var(--radius-lg);
   padding: 16px !important;
   margin: -8px -8px 12px -8px;
@@ -1675,7 +1663,7 @@ onBeforeUnmount(() => {
   &:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
-    background: rgba(34, 197, 94, 0.05);
+    background: rgba(224, 98, 0, 0.05);
     transform: translateY(-1px);
   }
 }
@@ -1697,7 +1685,7 @@ onBeforeUnmount(() => {
   transition: all var(--transition-fast);
 
   &:hover {
-    background: rgba(34, 197, 94, 0.05);
+    background: rgba(224, 98, 0, 0.05);
   }
 }
 
@@ -1766,7 +1754,7 @@ onBeforeUnmount(() => {
   align-items: flex-start;
   gap: 8px;
   padding: 12px;
-  background: rgba(34, 197, 94, 0.08);
+  background: rgba(224, 98, 0, 0.08);
   border-radius: var(--radius-md);
   font-size: 12px;
   color: var(--color-primary-dark);

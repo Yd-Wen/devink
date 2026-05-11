@@ -21,7 +21,7 @@
         <!-- 核心指标卡片 -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon" style="background: rgba(34, 197, 94, 0.1)">
+            <div class="stat-icon" style="background: rgba(224, 98, 0, 0.1)">
               <FileTextOutlined style="color: var(--color-primary)" />
             </div>
             <div class="stat-content">
@@ -220,8 +220,8 @@ const renderTrendChart = () => {
         ],
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#4ADE80' },
-            { offset: 1, color: '#22C55E' }
+            { offset: 0, color: '#f97316' },
+            { offset: 1, color: '#e06200' }
           ]),
           borderRadius: [4, 4, 0, 0]
         },
@@ -326,7 +326,7 @@ const renderQuotaChart = () => {
           {
             value: remainingQuota,
             name: '剩余',
-            itemStyle: { color: '#22C55E' }
+            itemStyle: { color: '#e06200' }
           }
         ],
         emphasis: {

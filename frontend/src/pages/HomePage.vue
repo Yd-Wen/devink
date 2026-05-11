@@ -67,13 +67,13 @@ const features = [
   {
     icon: FileTextOutlined,
     title: '智能生成标题',
-    description: 'AI 自动分析选题，生成吸引眼球的爆款标题',
-    color: '#22C55E'
+    description: 'AI 自动分析选题，生成契合主题、兼具吸引力的优质标题',
+    color: '#e06200'
   },
   {
     icon: OrderedListOutlined,
     title: '自动生成大纲',
-    description: '智能规划文章结构，确保逻辑清晰完整',
+    description: '智能规划文章结构，确保内容创作逻辑清晰',
     color: '#3B82F6'
   },
   {
@@ -85,7 +85,7 @@ const features = [
   {
     icon: PictureOutlined,
     title: '智能配图',
-    description: '自动检索高质量无版权图片，完美匹配内容',
+    description: '自动检索高质量无版权图片，快速匹配文章内容',
     color: '#F59E0B'
   },
   {
@@ -97,7 +97,7 @@ const features = [
   {
     icon: ClockCircleOutlined,
     title: '历史管理',
-    description: '随时查看和管理所有创作记录，支持导出',
+    description: '随时查看和管理所有创作记录，支持内容导出',
     color: '#06B6D4'
   }
 ]
@@ -117,14 +117,14 @@ onMounted(() => {
           <ThunderboltOutlined />
           <span>AI 驱动的内容创作平台</span>
         </div>
-        <h1 class="hero-title">AI 爆款文章创作器</h1>
-        <p class="hero-subtitle">让每个人都能写出 10万+ 文章</p>
+        <h1 class="hero-title">AI 内容创作器</h1>
+        <p class="hero-subtitle">人人都能产出优质内容</p>
 
         <!-- 核心输入框 -->
         <div class="input-wrapper">
           <a-input
             v-model:value="topic"
-            placeholder="输入您想创作的文章选题，例如：2026年AI如何改变职场"
+            placeholder="输入您想创作的文章选题，例如：2026年AI路在何方"
             size="large"
             class="topic-input"
             @pressEnter="goToCreate"
@@ -139,7 +139,7 @@ onMounted(() => {
           </a-button>
         </div>
 
-        <p class="hero-tips">工作总结、心得体会、演讲稿、分析报告... 一键生成</p>
+        <p class="hero-tips">博客分享、工作总结、心得体会、分析报告... 一键生成</p>
       </div>
     </div>
 
@@ -260,8 +260,8 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: rgba(224, 98, 0, 0.1);
+  border: 1px solid rgba(224, 98, 0, 0.2);
   border-radius: var(--radius-full);
   font-size: 14px;
   font-weight: 500;
@@ -329,7 +329,7 @@ onMounted(() => {
   background: var(--gradient-primary) !important;
   border: none !important;
   color: white !important;
-  box-shadow: var(--shadow-green) !important;
+  box-shadow: var(--shadow-orange) !important;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -343,7 +343,7 @@ onMounted(() => {
   background: var(--gradient-primary) !important;
   border: none !important;
   color: white !important;
-  box-shadow: var(--shadow-green) !important;
+  box-shadow: var(--shadow-orange) !important;
   opacity: 0.92;
 }
 
@@ -375,7 +375,7 @@ onMounted(() => {
 .section-badge {
   display: inline-block;
   padding: 6px 14px;
-  background: rgba(34, 197, 94, 0.1);
+  background: rgba(224, 98, 0, 0.1);
   border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 600;
@@ -581,7 +581,7 @@ onMounted(() => {
 }
 
 .blog-status.status-completed {
-  background: rgba(34, 197, 94, 0.1);
+  background: rgba(224, 98, 0, 0.1);
   color: var(--color-primary-dark);
 }
 

@@ -14,7 +14,7 @@
   background: var(--gradient-primary) !important;
   border: none !important;
   color: white !important;
-  box-shadow: var(--shadow-green) !important;
+  box-shadow: var(--shadow-orange) !important;
   transition: opacity var(--transition-normal) !important;
 }
 
@@ -24,7 +24,7 @@
   background: var(--gradient-primary) !important;
   border: none !important;
   color: white !important;
-  box-shadow: var(--shadow-green) !important;
+  box-shadow: var(--shadow-orange) !important;
   opacity: 0.92;
 }
 
