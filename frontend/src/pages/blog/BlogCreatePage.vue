@@ -840,7 +840,7 @@ const handleSSEMessage = (msg: SSEMessage) => {
       // 配图生成开始
       currentStep.value = 4
       imageCount.value = 0
-      imageProgress.value = 0
+      imageProgress.value = 1
       addLog('开始生成配图...', 'info')
       break
 

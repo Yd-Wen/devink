@@ -248,37 +248,37 @@ class BlogAgentService:
             prompt=PromptConstant.IMG_REQ_AGENT_PROMPT,
             input_data={"requirementsCount": len(state.image_requirements or [])},
         ) as log_data:
-            generated_pairs = await self.parallel_image_generator.generate(state.image_requirements or [])
-            image_results = []
 
-            for requirement, result in generated_pairs:
-                image_source = requirement.image_source
-                logger.info(
-                    f"智能体5：开始获取配图, position={requirement.position}, "
-                    f"imageSource={image_source}, keywords={requirement.keywords}"
-                )
-
+            def _on_image_complete(requirement, result):
                 cos_url = result.url
                 method = result.method
-
-                # 创建配图结果（URL 已经是 COS 地址）
                 image_result = self._build_image_result(requirement, cos_url, method)
-                image_results.append(image_result)
 
-                # 推送单张配图完成
+                # 实时推送单张配图完成
                 image_complete_message = (
                     SseMessageTypeEnum.IMAGE_COMPLETE.get_streaming_prefix() +
                     image_result.model_dump_json(by_alias=True)
                 )
                 stream_handler(image_complete_message)
-                await asyncio.sleep(0)  # 让出控制权确保消息及时发送
 
                 logger.info(
                     f"智能体5：配图获取并上传成功, position={requirement.position}, "
                     f"method={method.value}, cosUrl={cos_url}"
                 )
 
-            # 并行执行后按位置排序，确保输出稳定
+            generated_pairs = await self.parallel_image_generator.generate(
+                state.image_requirements or [],
+                on_complete=_on_image_complete,
+            )
+
+            image_results = []
+            for requirement, result in generated_pairs:
+                cos_url = result.url
+                method = result.method
+                image_result = self._build_image_result(requirement, cos_url, method)
+                image_results.append(image_result)
+
+            # 按位置排序，确保输出稳定
             state.images = sorted(image_results, key=lambda item: item.position)
             log_data["outputData"] = self._safe_json_dumps({"imagesCount": len(image_results)})
             logger.info(f"智能体5：所有配图生成并上传完成, count={len(image_results)}")

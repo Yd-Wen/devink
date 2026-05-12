@@ -1,7 +1,7 @@
 """并行配图生成执行器"""
 
 import asyncio
-from typing import List, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 from app.schemas.blog import ImageRequirement
 from app.schemas.image import ImageRequest
@@ -18,8 +18,14 @@ class ParallelImageGenerator:
     async def generate(
         self,
         requirements: List[ImageRequirement],
+        on_complete: Optional[Callable[[ImageRequirement, Any], None]] = None,
     ) -> List[Tuple[ImageRequirement, object]]:
-        """并行生成图片，按输入顺序返回结果"""
+        """并行生成图片，按输入顺序返回结果
+
+        Args:
+            requirements: 配图需求列表
+            on_complete: 单张图片完成时的回调，用于实时进度通知
+        """
         if not requirements:
             return []
 
@@ -37,6 +43,8 @@ class ParallelImageGenerator:
                     requirement.image_source,
                     image_request,
                 )
+                if on_complete:
+                    on_complete(requirement, result)
                 return requirement, result
 
         results = await asyncio.gather(
