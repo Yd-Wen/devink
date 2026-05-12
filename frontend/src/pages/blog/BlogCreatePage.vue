@@ -46,7 +46,7 @@
           <div class="input-card">
             <div class="input-header">
               <h1 class="input-title">创作新博客</h1>
-              <p class="input-subtitle">输入选题，AI 帮你生成爆款博客</p>
+              <p class="input-subtitle">输入选题，AI 帮你生成博客</p>
             </div>
 
             <div class="input-area">
@@ -333,7 +333,7 @@
         </div>
 
         <!-- 创作进行中的提示（所有创作阶段） -->
-        <div v-if="isCreating || currentPhase === 'TITLE_SELECTING' || currentPhase === 'OUTLINE_EDITING'" class="panel-section">
+        <div v-if="showProgressPanel" class="panel-section">
           <h4 class="panel-title">
             <ClockCircleOutlined />
             创作进度
@@ -348,13 +348,20 @@
               <span class="step-value">{{ currentStep }}/{{ agentSteps.length }}</span>
             </div>
           </div>
-          <div v-if="isCreating" class="progress-tip">
+          <div
+            :class="[
+              'progress-tip',
+              { waiting: currentPhase === 'TITLE_SELECTING' || currentPhase === 'OUTLINE_EDITING' }
+            ]"
+          >
             <InfoCircleOutlined />
-            <span>AI 正在努力创作中，请耐心等待...</span>
-          </div>
-          <div v-else class="progress-tip waiting">
-            <InfoCircleOutlined />
-            <span>等待您的确认...</span>
+            <span>{{
+              currentPhase === 'TITLE_SELECTING' || currentPhase === 'OUTLINE_EDITING'
+                ? '等待您的确认...'
+                : currentPhase === 'COMPLETED'
+                  ? '所有步骤已完成'
+                  : 'AI 正在努力创作中，请耐心等待...'
+            }}</span>
           </div>
         </div>
 
@@ -557,6 +564,9 @@ const loginUserStore = useLoginUserStore()
 const isAdmin = computed(() => checkIsAdmin(loginUserStore.loginUser))
 const quota = computed(() => loginUserStore.loginUser.quota ?? 0)
 const hasQuota = computed(() => checkHasQuota(loginUserStore.loginUser))
+
+// 创作进度面板在除 INPUT 外的所有阶段显示
+const showProgressPanel = computed(() => currentPhase.value !== 'INPUT')
 
 // 智能体步骤（对应后端 6 个步骤）
 const agentSteps = [
@@ -1839,7 +1849,7 @@ onBeforeUnmount(() => {
 
       &.success {
         .log-time {
-          color: var(--color-success);
+          color: var(--color-primary);
         }
       }
 
