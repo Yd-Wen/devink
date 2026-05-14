@@ -61,14 +61,16 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS 配置
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # 前端开发服务器地址
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# CORS 配置（从环境变量读取，空字符串 = 不启用 = 同源部署）
+origins = [o.strip() for o in settings.allowed_origins.split(",") if o.strip()]
+if origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 # 全局异常处理
@@ -133,5 +135,4 @@ if __name__ == "__main__":
         "app.main:app",
         host=settings.server_host,
         port=settings.server_port,
-        reload=True
     )

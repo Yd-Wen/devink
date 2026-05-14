@@ -13,26 +13,35 @@ OUTPUT_FILE = ROOT_DIR / "sql" / "init.sql"
 
 
 def load_env(env_path: Path) -> dict[str, str]:
-    """加载 .env 文件"""
-    if not env_path.exists():
-        print(f"错误: .env 文件不存在: {env_path}", file=sys.stderr)
-        sys.exit(1)
+    """加载环境变量，优先从 .env 文件，否则从系统环境变量（Docker 场景）"""
+    if env_path.exists():
+        try:
+            from dotenv import dotenv_values
+            return dotenv_values(str(env_path))
+        except ImportError:
+            pass
 
-    try:
-        from dotenv import dotenv_values
-        return dotenv_values(str(env_path))
-    except ImportError:
-        pass
+        # 手动解析（兜底）
+        env = {}
+        with open(env_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                env[key.strip()] = value.strip().strip("\"'")
+        return env
 
-    # 手动解析（兜底）
+    # 回退：从系统环境变量读取（Docker 场景）
+    import os
     env = {}
-    with open(env_path, encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, _, value = line.partition("=")
-            env[key.strip()] = value.strip().strip("\"'")
+    required_keys = [
+        "PASSWORD_SALT", "INIT_ADMIN_PASSWORD",
+        "DB_HOST", "DB_PORT", "DB_USER", "DB_PASSWORD", "DB_NAME"
+    ]
+    for key in required_keys:
+        if key in os.environ:
+            env[key] = os.environ[key]
     return env
 
 

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vscode/
+*.local
+.env
+.env.*
+!env.d.ts
+.git/
+.gitignore
+README.md

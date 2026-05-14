@@ -9,7 +9,7 @@ from app.database import Base
 class Blog(Base):
     """博客表"""
     
-    __tablename__ = "Blog"
+    __tablename__ = "blog"
     
     id = Column(BigInteger, primary_key=True, autoincrement=True, comment="id")
     task_id = Column("taskId", String(64), nullable=False, unique=True, comment="任务ID（UUID）")

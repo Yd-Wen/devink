@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     # 服务器配置
     server_port: int = 8567
     server_host: str = "0.0.0.0"
+
+    # CORS 配置：逗号分隔的允许来源，空字符串表示不启用（同源部署）
+    allowed_origins: str = "http://localhost:5173"
     
     # 数据库配置
     db_host: str
