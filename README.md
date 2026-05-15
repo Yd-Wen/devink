@@ -14,13 +14,13 @@
 
 <p align="center">基于多智能体编排的 AI 博客写作助手。通过协调多个 AI Agent 协作完成博客创作——从标题生成、大纲规划、内容撰写到配图搜索，提供完整的写作工作流，并通过 SSE 实时推送进度。</p>
 
-- 项目地址：[https://devink.yindongwen.top](https://devink.yindongwen.top)
+- 仓库地址
 
-- 仓库地址：
-  
   - [https://github.com/Yd-Wen/devink](https://github.com/Yd-Wen/devink)
 
   - [https://gitee.com/yindong-wen/devink](https://gitee.com/yindong-wen/devink)
+
+- 项目地址：[https://devink.yindongwen.top](https://devink.yindongwen.top)
 
 ## 技术栈
 
